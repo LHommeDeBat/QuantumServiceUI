@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { QuantumApplicationService } from '../services/quantum-application.service';
 
 @Component({
   selector: 'app-quantum-application-list',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuantumApplicationListComponent implements OnInit {
 
-  constructor() { }
+  quantumApplications = [];
+
+  constructor(private quantumApplicationService: QuantumApplicationService) { }
 
   ngOnInit(): void {
+    this.quantumApplicationService.getQuantumApplications().subscribe(response => {
+      if (response._embedded) {
+        this.quantumApplications = response._embedded.quantumApplicationDtoList;
+        console.log(this.quantumApplications);
+      }
+    });
   }
 
 }
