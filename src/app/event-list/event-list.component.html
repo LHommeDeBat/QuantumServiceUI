@@ -1,4 +1,7 @@
 <mat-card class="m-3">
+  <button type="button" class="btn btn-success" (click)="addEvent()">
+    <i class="bi bi-plus"></i>
+  </button>
   <table class="table table-hover">
     <thead>
     <tr>
@@ -12,7 +15,7 @@
       <td>{{ event.name }}</td>
       <td>{{ event.type }}</td>
       <td class="col-3">
-        <button type="button" class="btn btn-danger btn-sm">
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteEvent(event._links.self.href)">
           <i class="bi bi-trash"></i>
         </button>
       </td>

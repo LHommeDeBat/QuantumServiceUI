@@ -47,7 +47,7 @@ export class QuantumApplicationListComponent implements OnInit {
           this.getQuantumApplications();
         });
       }
-    })
+    });
   }
 
   deleteQuantumApplication(url: string): void {

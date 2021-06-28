@@ -19,6 +19,9 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
+import { AddEventComponent } from './dialogs/add-event/add-event.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
     QuantumApplicationListComponent,
     EventListComponent,
     JobListComponent,
-    AddApplicationComponent
+    AddApplicationComponent,
+    AddEventComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,9 @@ import { NgxMatFileInputModule } from '@angular-material-components/file-input';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
-    NgxMatFileInputModule
+    NgxMatFileInputModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
