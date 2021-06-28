@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuantumApplicationService } from '../services/quantum-application.service';
+import { AddApplicationComponent } from '../dialogs/add-application/add-application.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-quantum-application-list',
@@ -10,7 +12,8 @@ export class QuantumApplicationListComponent implements OnInit {
 
   quantumApplications = [];
 
-  constructor(private quantumApplicationService: QuantumApplicationService) { }
+  constructor(private quantumApplicationService: QuantumApplicationService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.quantumApplicationService.getQuantumApplications().subscribe(response => {
@@ -19,6 +22,10 @@ export class QuantumApplicationListComponent implements OnInit {
         console.log(this.quantumApplications);
       }
     });
+  }
+
+  addQuantumApplication(): void {
+    const dialogRef = this.dialog.open(AddApplicationComponent, {});
   }
 
 }
