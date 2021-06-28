@@ -58,4 +58,11 @@ export class EventListComponent implements OnInit {
       this.getEvents();
     })
   }
+
+  generateNameDisplay(event: any): string {
+    if (event.type === 'QUEUE_SIZE') {
+      return event.type + ' <= ' + event.additionalProperties.queueSize;
+    }
+    return event.name;
+  }
 }
