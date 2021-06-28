@@ -25,6 +25,10 @@ export class AddApplicationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dialogRef.beforeClosed().subscribe(() => {
+      this.data.name = this.name ? this.name.value : undefined;
+      this.data.file = this.file ? this.file.value : undefined;
+    });
   }
 
   get name(): AbstractControl | null {

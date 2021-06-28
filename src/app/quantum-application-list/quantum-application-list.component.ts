@@ -32,6 +32,10 @@ export class QuantumApplicationListComponent implements OnInit {
         file: undefined
       },
     });
+
+    dialogRef.afterClosed().subscribe(data => {
+      console.log(data);
+    })
   }
 
 }
