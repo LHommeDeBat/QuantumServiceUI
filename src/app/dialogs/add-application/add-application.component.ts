@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -9,27 +9,35 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class AddApplicationComponent implements OnInit {
 
-  file: any;
-  form: FormGroup;
+  form = new FormGroup({
+    name: new FormControl(this.data.name, [
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      Validators.required
+    ]),
+    file: new FormControl(this.data.name, [
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      Validators.required
+    ])
+  });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private dialogRef: MatDialogRef<AddApplicationComponent>) { }
+              private dialogRef: MatDialogRef<AddApplicationComponent>) {
+  }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      name: new FormControl(this.data.name, [
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        Validators.required
-      ])
-    });
   }
 
   get name(): AbstractControl | null {
-    return this.form.get('name');
+    return this.form ? this.form.get('name') : null;
+  }
+
+  get file(): AbstractControl | null {
+    return this.form ? this.form.get('file') : null;
   }
 
   isRequiredDataMissing(): boolean {
-    return (this.name.errors?.required);
+    // @ts-ignore
+    return (this.name.errors?.required || this.file.errors?.required);
   }
 
   close(): void {
@@ -39,5 +47,7 @@ export class AddApplicationComponent implements OnInit {
 }
 
 export interface DialogData {
+  title: string;
   name: string;
+  file: any;
 }

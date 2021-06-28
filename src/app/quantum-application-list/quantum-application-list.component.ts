@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class QuantumApplicationListComponent implements OnInit {
 
-  quantumApplications = [];
+  quantumApplications: any[] = [];
 
   constructor(private quantumApplicationService: QuantumApplicationService,
               private dialog: MatDialog) { }
@@ -25,7 +25,13 @@ export class QuantumApplicationListComponent implements OnInit {
   }
 
   addQuantumApplication(): void {
-    const dialogRef = this.dialog.open(AddApplicationComponent, {});
+    const dialogRef = this.dialog.open(AddApplicationComponent, {
+      data: {
+        title: 'Add new Quantum-Application',
+        name: '',
+        file: undefined
+      },
+    });
   }
 
 }

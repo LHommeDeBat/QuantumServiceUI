@@ -1,5 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,18 +7,17 @@ import { QuantumApplicationListComponent } from './quantum-application-list/quan
 import { EventListComponent } from './event-list/event-list.component';
 import { JobListComponent } from './job-list/job-list.component';
 import { AppRoutingModule } from './app-routing.module';
+import { MatCardModule } from '@angular/material/card';
+import { AddApplicationComponent } from './dialogs/add-application/add-application.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AddApplicationComponent } from './dialogs/add-application/add-application.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -32,17 +31,16 @@ import { MatInputModule } from '@angular/material/input';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
+    MatCardModule,
     MatSidenavModule,
     MatListModule,
-    MatCardModule,
-    MatIconModule,
-    MatButtonModule,
+    RouterModule,
+    HttpClientModule,
     MatDialogModule,
-    ReactiveFormsModule,
     MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

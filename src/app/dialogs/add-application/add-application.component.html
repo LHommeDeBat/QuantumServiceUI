@@ -1,10 +1,15 @@
-<h2 mat-dialog-title> Create new Quantum-Application </h2>
+<h2 mat-dialog-title> {{ data.title }} </h2>
 
 <div mat-dialog-content>
   <form [formGroup]="form">
-    <mat-form-field appearance="fill">
+    <mat-form-field class="w-100">
       <mat-label>Name</mat-label>
       <input matInput id="name" formControlName="name" required>
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Qiskit-File (.py)</mat-label>
+      <input matInput id="file" formControlName="file" required>
     </mat-form-field>
   </form>
 </div>
