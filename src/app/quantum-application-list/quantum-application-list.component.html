@@ -1,7 +1,7 @@
 <mat-drawer-container class="h-100">
 
   <!-- Application Details-Sidenav -->
-  <mat-drawer #drawer mode="side" class="h-100 w-50" position="end">
+  <mat-drawer #drawer mode="side" class="h-100 w-50" position="end" [mode]="'over'">
     <mat-icon class="details-bar-close-button" (click)="closeDetailsView()">close</mat-icon>
     <div class="mx-3" *ngIf="selectedApplication">
       <h2> Metadata </h2>
