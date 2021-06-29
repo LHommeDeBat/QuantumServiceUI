@@ -23,6 +23,7 @@ import { AddEventComponent } from './dialogs/add-event/add-event.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { RegisterEventsComponent } from './dialogs/register-events/register-events.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MatIconModule } from '@angular/material/icon';
     EventListComponent,
     JobListComponent,
     AddApplicationComponent,
-    AddEventComponent
+    AddEventComponent,
+    RegisterEventsComponent
   ],
   imports: [
     BrowserModule,

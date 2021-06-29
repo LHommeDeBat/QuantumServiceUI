@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { QuantumApplicationUpload } from '../models/QuantumApplicationUpload';
 import { MatDrawer } from '@angular/material/sidenav';
 import { EventService } from '../services/event.service';
+import { RegisterEventsComponent } from '../dialogs/register-events/register-events.component';
 
 @Component({
   selector: 'app-quantum-application-list',
@@ -92,5 +93,19 @@ export class QuantumApplicationListComponent implements OnInit {
       return event.type + ' <= ' + event.additionalProperties.queueSize;
     }
     return event.name;
+  }
+
+  openRegisterEventsDialog(): void {
+    const dialogRef = this.dialog.open(RegisterEventsComponent, {
+      width: '50%',
+      data: {
+        application: this.selectedApplication,
+        registeredEvents: this.applicationEvents
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+     this.getApplicationEvents(this.selectedApplication._links.events.href);
+    });
   }
 }

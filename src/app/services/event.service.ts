@@ -27,4 +27,8 @@ export class EventService {
   unregisterApplication(eventName: string, applicationName: string): Observable<any> {
     return this.http.delete<any>(this.url + '/' + eventName + '/quantum-applications/' + applicationName);
   }
+
+  registerApplication(eventName: string, applicationName: string): Observable<any> {
+    return this.http.post<any>(this.url + '/' + eventName + '/quantum-applications/' + applicationName, undefined);
+  }
 }
