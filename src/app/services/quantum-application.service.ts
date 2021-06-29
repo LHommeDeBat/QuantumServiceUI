@@ -16,6 +16,10 @@ export class QuantumApplicationService {
     return this.http.get<any>(this.url);
   }
 
+  getApplicationEvents(url: string): Observable<any> {
+    return this.http.get<any>(url);
+  }
+
   createQuantumApplication(dto: QuantumApplicationUpload, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('script', file);

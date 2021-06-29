@@ -13,7 +13,7 @@
     <tbody>
     <tr *ngFor="let event of events">
       <td>{{ event.name }}</td>
-      <td>{{ generateNameDisplay(event) }}</td>
+      <td>{{ generateTypeDisplay(event) }}</td>
       <td class="col-3">
         <button type="button" class="btn btn-danger btn-sm" (click)="deleteEvent(event._links.self.href)">
           <i class="bi bi-trash"></i>

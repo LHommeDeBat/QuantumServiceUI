@@ -1,27 +1,89 @@
-<mat-card class="m-3">
-  <button type="button" class="btn btn-success" (click)="addQuantumApplication()">
-    <i class="bi bi-plus"></i>
-  </button>
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th class="col-3">Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let application of quantumApplications">
-      <td>{{ application.name }}</td>
-      <td class="col-3">
-        <button type="button" class="btn btn-primary btn-sm mx-1">
-          <i class="bi bi-download"></i>
-        </button>
+<mat-drawer-container class="h-100">
 
-        <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuantumApplication(application._links.self.href)">
-          <i class="bi bi-trash"></i>
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</mat-card>
+  <!-- Application Details-Sidenav -->
+  <mat-drawer #drawer mode="side" class="h-100 w-50" position="end">
+    <mat-icon class="details-bar-close-button" (click)="closeDetailsView()">close</mat-icon>
+    <div class="mx-3" *ngIf="selectedApplication">
+      <h2> Metadata </h2>
+    </div>
+    <mat-card class="m-3" *ngIf="selectedApplication">
+      <mat-form-field class="w-100">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="selectedApplication.id" disabled>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedApplication">
+      <mat-form-field class="w-100">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="selectedApplication.name" disabled>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-divider></mat-divider>
+
+    <div class="mx-3">
+      <h2> Registered-Events </h2>
+    </div>
+
+    <mat-card class="m-3">
+      <button type="button" class="btn btn-success" (click)="addQuantumApplication()">
+        <i class="bi bi-plus"></i>
+      </button>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th class="col-3">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let event of applicationEvents">
+          <td>{{ event.name }}</td>
+          <td>{{ generateEventTypeDisplay(event) }}</td>
+          <td class="col-3">
+            <button type="button" class="btn btn-danger btn-sm" (click)="unregisterApplicationFromEvent(selectedApplication, event)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="applicationEvents.length === 0">
+          <div class="mt-1">
+            This application is not registered for any events!
+          </div>
+        </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </mat-drawer>
+
+  <!-- Application Main-View -->
+  <mat-card class="m-3">
+    <button type="button" class="btn btn-success" (click)="addQuantumApplication()">
+      <i class="bi bi-plus"></i>
+    </button>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th class="col-3">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="application-row" *ngFor="let application of quantumApplications" (click)="selectApplication(application)">
+        <td>{{ application.name }}</td>
+        <td class="col-3">
+          <button type="button" class="btn btn-primary btn-sm mx-1">
+            <i class="bi bi-download"></i>
+          </button>
+
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuantumApplication(application._links.self.href); $event.stopPropagation()">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </mat-card>
+</mat-drawer-container>

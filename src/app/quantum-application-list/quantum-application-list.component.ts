@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuantumApplicationService } from '../services/quantum-application.service';
 import { AddApplicationComponent } from '../dialogs/add-application/add-application.component';
 import { MatDialog } from '@angular/material/dialog';
 import { QuantumApplicationUpload } from '../models/QuantumApplicationUpload';
+import { MatDrawer } from '@angular/material/sidenav';
+import { EventService } from '../services/event.service';
 
 @Component({
   selector: 'app-quantum-application-list',
@@ -12,8 +14,12 @@ import { QuantumApplicationUpload } from '../models/QuantumApplicationUpload';
 export class QuantumApplicationListComponent implements OnInit {
 
   quantumApplications: any[] = [];
+  selectedApplication: any = undefined;
+  applicationEvents: any[] = [];
+  @ViewChild('drawer') public drawer: MatDrawer | undefined;
 
   constructor(private quantumApplicationService: QuantumApplicationService,
+              private eventService: EventService,
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -22,11 +28,14 @@ export class QuantumApplicationListComponent implements OnInit {
 
   getQuantumApplications(): void {
     this.quantumApplicationService.getQuantumApplications().subscribe(response => {
-      if (response._embedded) {
-        this.quantumApplications = response._embedded.quantumApplicationDtoList;
-        console.log(this.quantumApplications);
-      }
+      this.quantumApplications = response._embedded ? response._embedded.quantumApplicationDtoList : [];
     });
+  }
+
+  getApplicationEvents(url: string): void {
+      this.quantumApplicationService.getApplicationEvents(url).subscribe(response => {
+        this.applicationEvents = response._embedded ? response._embedded.eventDtoList : [];
+      });
   }
 
   addQuantumApplication(): void {
@@ -52,7 +61,36 @@ export class QuantumApplicationListComponent implements OnInit {
 
   deleteQuantumApplication(url: string): void {
     this.quantumApplicationService.deleteQuantumApplication(url).subscribe(() => {
+      console.log('DELETED via: ' + url);
       this.getQuantumApplications();
     });
+  }
+
+  selectApplication(application: any): void {
+    if (!this.selectedApplication || this.selectedApplication.id !== application.id) {
+      this.selectedApplication = application;
+      this.getApplicationEvents(application._links.events.href);
+    }
+    this.drawer?.open();
+    console.log(this.selectedApplication);
+  }
+
+  closeDetailsView(): void {
+    this.drawer?.close();
+    this.applicationEvents = [];
+    this.selectedApplication = undefined;
+  }
+
+  unregisterApplicationFromEvent(selectedApplication: any, event: any) {
+    this.eventService.unregisterApplication(event.name, selectedApplication.name).subscribe(() => {
+      this.getApplicationEvents(selectedApplication._links.events.href);
+    });
+  }
+
+  generateEventTypeDisplay(event: any): string {
+    if (event.type === 'QUEUE_SIZE') {
+      return event.type + ' <= ' + event.additionalProperties.queueSize;
+    }
+    return event.name;
   }
 }

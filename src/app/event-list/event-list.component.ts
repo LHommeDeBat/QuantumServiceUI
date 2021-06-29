@@ -22,10 +22,7 @@ export class EventListComponent implements OnInit {
 
   getEvents(): void {
     this.eventService.getEvents().subscribe(response => {
-      if (response._embedded) {
-        this.events = response._embedded.eventDtoList;
-        console.log(this.events);
-      }
+      this.events = response._embedded ? response._embedded.eventDtoList : [];
     });
   }
 
@@ -59,7 +56,7 @@ export class EventListComponent implements OnInit {
     })
   }
 
-  generateNameDisplay(event: any): string {
+  generateTypeDisplay(event: any): string {
     if (event.type === 'QUEUE_SIZE') {
       return event.type + ' <= ' + event.additionalProperties.queueSize;
     }
