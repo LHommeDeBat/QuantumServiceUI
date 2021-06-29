@@ -20,6 +20,11 @@
         </button>
       </td>
     </tr>
+    <tr *ngIf="events.length === 0">
+      <div class="mt-1">
+        No events found!
+      </div>
+    </tr>
     </tbody>
   </table>
 </mat-card>

@@ -83,6 +83,11 @@
           </button>
         </td>
       </tr>
+      <tr *ngIf="quantumApplications.length === 0">
+        <div class="mt-1">
+          No quantum applications found!
+        </div>
+      </tr>
       </tbody>
     </table>
   </mat-card>
