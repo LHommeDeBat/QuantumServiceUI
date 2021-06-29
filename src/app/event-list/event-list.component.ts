@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { EventDto } from '../models/EventDto';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEventComponent } from '../dialogs/add-event/add-event.component';
+import { FireEventDto } from '../models/FireEventDto';
+import { GenerateEventComponent } from '../dialogs/generate-event/generate-event.component';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-event-list',
@@ -14,6 +17,7 @@ export class EventListComponent implements OnInit {
   events: any[] = [];
 
   constructor(private eventService: EventService,
+              private toastService: ToastService,
               private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -61,5 +65,28 @@ export class EventListComponent implements OnInit {
       return event.type + ' <= ' + event.additionalProperties.queueSize;
     }
     return event.name;
+  }
+
+  fireEvent(): void {
+    const dialogRef = this.dialog.open(GenerateEventComponent, {
+      data: {
+        additionalProperties: {}
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data: FireEventDto) => {
+      if (data) {
+        const dto: FireEventDto = {
+          device: data.device,
+          replyTo: data.replyTo,
+          eventType: data.eventType,
+          additionalProperties: data.additionalProperties,
+        };
+
+        this.eventService.fireEvent(dto).subscribe(() => {
+          this.toastService.displayToast('Event was successfully fired!');
+        });
+      }
+    });
   }
 }

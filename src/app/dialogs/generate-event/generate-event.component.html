@@ -1,0 +1,34 @@
+<h2 mat-dialog-title> Generate Event </h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field class="w-100">
+      <mat-label>Device</mat-label>
+      <input matInput id="device" formControlName="device" required>
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Reply to</mat-label>
+      <input matInput id="replyTo" formControlName="replyTo" required>
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Type</mat-label>
+      <mat-select id="eventType" formControlName="eventType" required>
+        <mat-option [value]="'QUEUE_SIZE'">Queue Size</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <ng-container *ngIf="eventType && eventType.value === 'QUEUE_SIZE'">
+      <mat-form-field class="w-100">
+        <mat-label>Queue Size</mat-label>
+        <input matInput id="queueSize" formControlName="queueSize" type="number" required>
+      </mat-form-field>
+    </ng-container>
+  </form>
+</div>
+
+<mat-dialog-actions>
+  <button mat-raised-button (click)="close()">Close</button>
+  <button mat-raised-button color="primary" [disabled]="isRequiredDataMissing()" [mat-dialog-close]="data">Generate</button>
+</mat-dialog-actions>

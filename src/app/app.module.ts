@@ -24,6 +24,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RegisterEventsComponent } from './dialogs/register-events/register-events.component';
+import { GenerateEventComponent } from './dialogs/generate-event/generate-event.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { RegisterEventsComponent } from './dialogs/register-events/register-even
     JobListComponent,
     AddApplicationComponent,
     AddEventComponent,
-    RegisterEventsComponent
+    RegisterEventsComponent,
+    GenerateEventComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +56,8 @@ import { RegisterEventsComponent } from './dialogs/register-events/register-even
     MatSelectModule,
     MatOptionModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
