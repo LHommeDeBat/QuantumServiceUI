@@ -4,19 +4,19 @@
   <mat-drawer #drawer mode="side" class="h-100 w-50" position="end" [mode]="'over'">
     <mat-icon class="details-bar-close-button" (click)="closeDetailsView()">close</mat-icon>
     <div class="mx-3" *ngIf="selectedApplication">
-      <h2> Metadata </h2>
+      <h2> Application Information </h2>
     </div>
     <mat-card class="m-3" *ngIf="selectedApplication">
       <mat-form-field class="w-100">
         <mat-label>ID</mat-label>
-        <input matInput [(ngModel)]="selectedApplication.id" disabled>
+        <input matInput [(ngModel)]="selectedApplication.id" readonly>
       </mat-form-field>
     </mat-card>
 
     <mat-card class="m-3" *ngIf="selectedApplication">
       <mat-form-field class="w-100">
         <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="selectedApplication.name" disabled>
+        <input matInput [(ngModel)]="selectedApplication.name" readonly>
       </mat-form-field>
     </mat-card>
 

@@ -1,1 +1,72 @@
-<p>job-list works!</p>
+<mat-drawer-container class="h-100">
+
+  <!-- Application Details-Sidenav -->
+  <mat-drawer #drawer mode="side" class="h-100 w-50" position="end" [mode]="'over'">
+    <mat-icon class="details-bar-close-button" (click)="closeDetailsView()">close</mat-icon>
+    <div class="mx-3" *ngIf="selectedJob">
+      <h2> Job Information </h2>
+    </div>
+    <mat-card class="m-3" *ngIf="selectedJob">
+      <mat-form-field class="w-50">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="selectedJob.id" readonly>
+      </mat-form-field>
+      <mat-form-field class="w-50">
+        <mat-label>IBMQ-ID</mat-label>
+        <input matInput [(ngModel)]="selectedJob.ibmqId" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob">
+      <mat-form-field class="w-100">
+        <mat-label>Status</mat-label>
+        <input matInput [(ngModel)]="selectedJob.status" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob">
+      <mat-form-field class="w-50" *ngIf="selectedJob.creationDate">
+        <mat-label>Creation Date</mat-label>
+        <input matInput [ngModel]="selectedJob.creationDate | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
+      <mat-form-field class="w-50" *ngIf="selectedJob.endDate">
+        <mat-label>End Date</mat-label>
+        <input matInput [ngModel]="selectedJob.endDate | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob && selectedJob.result">
+      <mat-form-field class="w-100">
+        <mat-label>Result (JSON)</mat-label>
+        <textarea matInput [ngModel]="parseResult(selectedJob.result) | json" [matTextareaAutosize]="true" readonly></textarea>
+      </mat-form-field>
+    </mat-card>
+  </mat-drawer>
+
+  <!-- Application Main-View -->
+  <mat-card class="m-3">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>IBMQ ID</th>
+        <th>Status</th>
+        <th>Creation Date</th>
+        <th>End Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="job-row" *ngFor="let job of jobs" (click)="selectJob(job)">
+        <td>{{ job.ibmqId }}</td>
+        <td>{{ job.status }}</td>
+        <td>{{ job.creationDate | date:'MMMM d, y, H:mm:ss' }}</td>
+        <td>{{ job.endDate | date:'MMMM d, y, H:mm:ss' }}</td>
+      </tr>
+      <tr *ngIf="jobs.length === 0">
+        <div class="mt-1">
+          No jobs found!
+        </div>
+      </tr>
+      </tbody>
+    </table>
+  </mat-card>
+</mat-drawer-container>
