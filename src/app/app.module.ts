@@ -26,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RegisterEventsComponent } from './dialogs/register-events/register-events.component';
 import { GenerateEventComponent } from './dialogs/generate-event/generate-event.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { InvokeActionComponent } from './dialogs/invoke-action/invoke-action.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AddApplicationComponent,
     AddEventComponent,
     RegisterEventsComponent,
-    GenerateEventComponent
+    GenerateEventComponent,
+    InvokeActionComponent
   ],
   imports: [
     BrowserModule,

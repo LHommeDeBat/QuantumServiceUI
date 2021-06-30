@@ -20,6 +20,13 @@
       </mat-form-field>
     </mat-card>
 
+    <div class="m-3" *ngIf="selectedApplication">
+      <button mat-raised-button color="primary" class="w-100"
+              (click)="invokeApplication(selectedApplication)">
+        Invoke {{ selectedApplication.name }}
+      </button>
+    </div>
+
     <mat-divider></mat-divider>
 
     <div class="mx-3">
@@ -74,11 +81,10 @@
       <tr class="application-row" *ngFor="let application of quantumApplications" (click)="selectApplication(application)">
         <td>{{ application.name }}</td>
         <td class="col-3">
-          <button type="button" class="btn btn-primary btn-sm mx-1">
-            <i class="bi bi-download"></i>
+          <button type="button" class="btn btn-primary btn-sm" (click)="invokeApplication(application); $event.stopPropagation()">
+            <i class="bi bi-play"></i>
           </button>
-
-          <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuantumApplication(application._links.self.href); $event.stopPropagation()">
+          <button type="button" class="btn btn-danger btn-sm mx-1" (click)="deleteQuantumApplication(application._links.self.href); $event.stopPropagation()">
             <i class="bi bi-trash"></i>
           </button>
         </td>

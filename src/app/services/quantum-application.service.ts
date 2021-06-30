@@ -31,4 +31,8 @@ export class QuantumApplicationService {
   deleteQuantumApplication(url: string): Observable<any> {
     return this.http.delete<any>(url);
   }
+
+  invokeApplication(url: string, dto: any) {
+    return this.http.post<any>(url, dto);
+  }
 }

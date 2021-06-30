@@ -6,6 +6,10 @@ import { QuantumApplicationUpload } from '../models/QuantumApplicationUpload';
 import { MatDrawer } from '@angular/material/sidenav';
 import { EventService } from '../services/event.service';
 import { RegisterEventsComponent } from '../dialogs/register-events/register-events.component';
+import { GenerateEventComponent } from '../dialogs/generate-event/generate-event.component';
+import { FireEventDto } from '../models/FireEventDto';
+import { InvokeActionComponent } from '../dialogs/invoke-action/invoke-action.component';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-quantum-application-list',
@@ -21,6 +25,7 @@ export class QuantumApplicationListComponent implements OnInit {
 
   constructor(private quantumApplicationService: QuantumApplicationService,
               private eventService: EventService,
+              private toastService: ToastService,
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -106,6 +111,27 @@ export class QuantumApplicationListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(() => {
      this.getApplicationEvents(this.selectedApplication._links.events.href);
+    });
+  }
+
+  invokeApplication(application: any): void {
+    const dialogRef = this.dialog.open(InvokeActionComponent, {
+      data: {
+        applicationName: application.name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        const dto: any = {
+          device: data.device,
+          replyTo: data.replyTo,
+        };
+
+        this.quantumApplicationService.invokeApplication(application._links.invoke.href, dto).subscribe(() => {
+          this.toastService.displayToast('Application invocation was successfully transmitted!');
+        });
+      }
     });
   }
 }
