@@ -75,7 +75,6 @@ export class QuantumApplicationListComponent implements OnInit {
 
   deleteQuantumApplication(url: string): void {
     this.quantumApplicationService.deleteQuantumApplication(url).subscribe(() => {
-      console.log('DELETED via: ' + url);
       this.getQuantumApplications();
     });
   }
@@ -87,7 +86,6 @@ export class QuantumApplicationListComponent implements OnInit {
       this.downloadApplicationScript(application, false);
     }
     this.drawer?.open();
-    console.log(this.selectedApplication);
   }
 
   closeDetailsView(): void {

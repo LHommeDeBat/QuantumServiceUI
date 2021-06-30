@@ -30,7 +30,6 @@ export class JobListComponent implements OnInit {
       this.selectedJob = job;
     }
     this.drawer?.open();
-    console.log(this.selectedJob);
   }
 
   closeDetailsView(): void {
