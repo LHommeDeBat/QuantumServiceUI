@@ -20,6 +20,11 @@ export class QuantumApplicationService {
     return this.http.get<any>(url);
   }
 
+  downloadApplicationScript(url: string): Observable<any> {
+    // @ts-ignore
+    return this.http.get<any>(url, { responseType: 'blob'});
+  }
+
   createQuantumApplication(dto: QuantumApplicationUpload, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('script', file);

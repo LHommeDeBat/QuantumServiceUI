@@ -20,10 +20,24 @@
       </mat-form-field>
     </mat-card>
 
+    <mat-card class="m-3" *ngIf="selectedApplication && selectedApplication.script">
+      <mat-form-field class="w-100">
+        <mat-label>Script</mat-label>
+        <textarea matInput [ngModel]="selectedApplication.script" [matTextareaAutosize]="true" readonly></textarea>
+      </mat-form-field>
+    </mat-card>
+
     <div class="m-3" *ngIf="selectedApplication">
       <button mat-raised-button color="primary" class="w-100"
               (click)="invokeApplication(selectedApplication)">
-        Invoke {{ selectedApplication.name }}
+        Invoke Quantum-Application
+      </button>
+    </div>
+
+    <div class="m-3" *ngIf="selectedApplication">
+      <button mat-raised-button color="accent" class="w-100"
+              (click)="downloadApplicationScript(selectedApplication, true)">
+        Download Script
       </button>
     </div>
 
@@ -84,7 +98,10 @@
           <button type="button" class="btn btn-primary btn-sm" (click)="invokeApplication(application); $event.stopPropagation()">
             <i class="bi bi-play"></i>
           </button>
-          <button type="button" class="btn btn-danger btn-sm mx-1" (click)="deleteQuantumApplication(application._links.self.href); $event.stopPropagation()">
+          <button type="button" class="btn btn-primary btn-sm mx-1" (click)="downloadApplicationScript(application, true); $event.stopPropagation()">
+            <i class="bi bi-download"></i>
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuantumApplication(application._links.self.href); $event.stopPropagation()">
             <i class="bi bi-trash"></i>
           </button>
         </td>
