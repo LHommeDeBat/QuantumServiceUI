@@ -6,7 +6,9 @@
       <mat-label>Type</mat-label>
       <mat-select id="device" formControlName="device" required [disabled]="this.availableDevices.length === 0">
         <mat-option *ngFor="let availableDevice of availableDevices" [value]="availableDevice">{{ availableDevice }}</mat-option>
+        <mat-option *ngIf="!loadingDevices && this.availableDevices.length === 0" [value]="'no-devices'">No devices available</mat-option>
       </mat-select>
+      <mat-spinner matPrefix *ngIf="loadingDevices" mode="indeterminate" diameter="17"></mat-spinner>
     </mat-form-field>
 
     <mat-form-field class="w-100">

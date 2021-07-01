@@ -12,9 +12,10 @@ import { IbmqService } from '../../services/ibmq.service';
 export class InvokeActionComponent implements OnInit {
 
   availableDevices: string[] = [];
+  loadingDevices: boolean = true;
 
   form = new FormGroup({
-    device: new FormControl(this.data.device ? this.data.device : undefined, [
+    device: new FormControl('no-devices', [
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
@@ -31,6 +32,7 @@ export class InvokeActionComponent implements OnInit {
 
   ngOnInit(): void {
     this.ibmqService.getAvailableDevices().subscribe(response => {
+      this.loadingDevices = false;
       this.availableDevices = response ? response : [];
 
       if (this.availableDevices.length > 0) {
@@ -54,7 +56,7 @@ export class InvokeActionComponent implements OnInit {
 
   isRequiredDataMissing(): boolean {
     // @ts-ignore
-    return (this.device?.errors?.required || this.replyTo?.errors?.required);
+    return (this.availableDevices.length === 0 || this.device?.errors?.required || this.replyTo?.errors?.required);
   }
 
   close(): void {

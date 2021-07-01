@@ -27,6 +27,7 @@ import { RegisterEventsComponent } from './dialogs/register-events/register-even
 import { GenerateEventComponent } from './dialogs/generate-event/generate-event.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { InvokeActionComponent } from './dialogs/invoke-action/invoke-action.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { InvokeActionComponent } from './dialogs/invoke-action/invoke-action.com
     MatOptionModule,
     FormsModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
