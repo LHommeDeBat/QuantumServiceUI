@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FireEventDto } from '../../models/FireEventDto';
+import { IbmqService } from '../../services/ibmq.service';
 
 @Component({
   selector: 'app-generate-event',
@@ -10,8 +11,10 @@ import { FireEventDto } from '../../models/FireEventDto';
 })
 export class GenerateEventComponent implements OnInit {
 
+  availableDevices: string[] = [];
+
   form = new FormGroup({
-    device: new FormControl(this.data.device ? this.data.device : 'ibmq_qasm_simulator', [
+    device: new FormControl(this.data.device ? this.data.device : undefined, [
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
@@ -30,6 +33,7 @@ export class GenerateEventComponent implements OnInit {
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: FireEventDto,
+              private ibmqService: IbmqService,
               private dialogRef: MatDialogRef<GenerateEventComponent>) {
   }
 
@@ -37,6 +41,14 @@ export class GenerateEventComponent implements OnInit {
     if (!this.data.additionalProperties) {
       this.data.additionalProperties = {};
     }
+
+    this.ibmqService.getAvailableDevices().subscribe(response => {
+      this.availableDevices = response ? response : [];
+
+      if (this.availableDevices.length > 0) {
+        this.device?.setValue(this.availableDevices[0]);
+      }
+    });
 
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.device = this.device ? this.device.value : undefined;

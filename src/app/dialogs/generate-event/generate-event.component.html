@@ -3,8 +3,10 @@
 <div mat-dialog-content>
   <form [formGroup]="form">
     <mat-form-field class="w-100">
-      <mat-label>Device</mat-label>
-      <input matInput id="device" formControlName="device" required>
+      <mat-label>Type</mat-label>
+      <mat-select id="device" formControlName="device" required [disabled]="this.availableDevices.length === 0">
+        <mat-option *ngFor="let availableDevice of availableDevices" [value]="availableDevice">{{ availableDevice }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field class="w-100">
