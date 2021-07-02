@@ -1,21 +1,21 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { EventDto } from '../../models/EventDto';
+import { EventTriggerDto } from '../../models/event-trigger-dto';
 
 @Component({
   selector: 'app-add-event',
-  templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.scss']
+  templateUrl: './add-event-trigger.component.html',
+  styleUrls: ['./add-event-trigger.component.scss']
 })
-export class AddEventComponent implements OnInit {
+export class AddEventTriggerComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl(this.data.name ? this.data.name : '', [
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
-    type: new FormControl(this.data.type ? this.data.type : 'QUEUE_SIZE', [
+    eventType: new FormControl(this.data.eventType ? this.data.eventType : 'QUEUE_SIZE', [
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
@@ -25,8 +25,8 @@ export class AddEventComponent implements OnInit {
     ])
   });
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: EventDto,
-              private dialogRef: MatDialogRef<AddEventComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: EventTriggerDto,
+              private dialogRef: MatDialogRef<AddEventTriggerComponent>) {
   }
 
   ngOnInit(): void {
@@ -36,8 +36,8 @@ export class AddEventComponent implements OnInit {
 
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.name = this.name ? this.name.value : undefined;
-      this.data.type = this.type ? this.type.value : undefined;
-      if (this.data.type === 'QUEUE_SIZE') {
+      this.data.eventType = this.eventType ? this.eventType.value : undefined;
+      if (this.data.eventType === 'QUEUE_SIZE') {
         this.data.additionalProperties.queueSize = this.queueSize ? this.queueSize.value : undefined;
       }
     });
@@ -47,8 +47,8 @@ export class AddEventComponent implements OnInit {
     return this.form ? this.form.get('name') : null;
   }
 
-  get type(): AbstractControl | null {
-    return this.form ? this.form.get('type') : null;
+  get eventType(): AbstractControl | null {
+    return this.form ? this.form.get('eventType') : null;
   }
 
   get queueSize(): AbstractControl | null {
@@ -59,8 +59,8 @@ export class AddEventComponent implements OnInit {
     // @ts-ignore
     return (
       this.name?.errors?.required ||
-      this.type?.errors?.required ||
-      (this.type?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required));
+      this.eventType?.errors?.required ||
+      (this.eventType?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required));
   }
 
   close(): void {

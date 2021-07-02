@@ -44,34 +44,34 @@
     <mat-divider></mat-divider>
 
     <div class="mx-3">
-      <h2> Registered-Events </h2>
+      <h2> Registered Event-Triggers </h2>
     </div>
 
     <mat-card class="m-3">
-      <button type="button" class="btn btn-success" (click)="openRegisterEventsDialog()">
+      <button type="button" class="btn btn-success" (click)="openRegisterEventTriggersDialog()">
         <i class="bi bi-plus"></i>
       </button>
       <table class="table">
         <thead>
         <tr>
           <th>Name</th>
-          <th>Type</th>
+          <th>Event Type</th>
           <th class="col-3">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let event of applicationEvents">
-          <td>{{ event.name }}</td>
-          <td>{{ generateEventTypeDisplay(event) }}</td>
+        <tr *ngFor="let eventTrigger of applicationEventTriggers">
+          <td>{{ eventTrigger.name }}</td>
+          <td>{{ generateEventTypeDisplay(eventTrigger) }}</td>
           <td class="col-3">
-            <button type="button" class="btn btn-danger btn-sm" (click)="unregisterApplicationFromEvent(selectedApplication, event)">
+            <button type="button" class="btn btn-danger btn-sm" (click)="unregisterApplicationFromEventTrigger(selectedApplication, eventTrigger)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
-        <tr *ngIf="applicationEvents.length === 0">
+        <tr *ngIf="applicationEventTriggers.length === 0">
           <div class="mt-1">
-            This application is not registered for any events!
+            This application is not registered for any event triggers!
           </div>
         </tr>
         </tbody>

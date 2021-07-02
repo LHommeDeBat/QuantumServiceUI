@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { EventDto } from '../models/EventDto';
+import { EventTriggerDto } from '../models/event-trigger-dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventService {
+export class EventTriggerService {
 
-  url = 'http://localhost:9005/events';
+  url = 'http://localhost:9005/event-triggers';
 
   constructor(private http: HttpClient) {}
 
-  getEvents(): Observable<any> {
+  getEventTriggers(): Observable<any> {
     return this.http.get<any>(this.url);
   }
 
-  createEvent(dto: EventDto): Observable<any> {
+  createEventTrigger(dto: EventTriggerDto): Observable<any> {
     return this.http.post<any>(this.url, dto);
   }
 
-  deleteEvent(url: string): Observable<any> {
+  deleteEventTrigger(url: string): Observable<any> {
     return this.http.delete<any>(url);
   }
 

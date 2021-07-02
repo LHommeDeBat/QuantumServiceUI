@@ -28,8 +28,8 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/QuantumServiceUI'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { eventType: 'html' },
+        { eventType: 'text-summary' }
       ]
     },
     reporters: ['progress', 'kjhtml'],

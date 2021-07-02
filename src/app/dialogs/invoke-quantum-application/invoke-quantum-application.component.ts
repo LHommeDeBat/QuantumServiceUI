@@ -1,15 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FireEventDto } from '../../models/FireEventDto';
+import { FireEventDto } from '../../models/fire-event-dto';
 import { IbmqService } from '../../services/ibmq.service';
 
 @Component({
   selector: 'app-invoke-action',
-  templateUrl: './invoke-action.component.html',
-  styleUrls: ['./invoke-action.component.scss']
+  templateUrl: './invoke-quantum-application.component.html',
+  styleUrls: ['./invoke-quantum-application.component.scss']
 })
-export class InvokeActionComponent implements OnInit {
+export class InvokeQuantumApplicationComponent implements OnInit {
 
   availableDevices: string[] = [];
   loadingDevices: boolean = true;
@@ -27,7 +27,7 @@ export class InvokeActionComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: InvokeApplicationForm,
               private ibmqService: IbmqService,
-              private dialogRef: MatDialogRef<InvokeActionComponent>) {
+              private dialogRef: MatDialogRef<InvokeQuantumApplicationComponent>) {
   }
 
   ngOnInit(): void {

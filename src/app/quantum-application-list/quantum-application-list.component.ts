@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuantumApplicationService } from '../services/quantum-application.service';
-import { AddApplicationComponent } from '../dialogs/add-application/add-application.component';
+import { AddQuantumApplicationComponent } from '../dialogs/add-quantum-application/add-quantum-application.component';
 import { MatDialog } from '@angular/material/dialog';
-import { QuantumApplicationUpload } from '../models/QuantumApplicationUpload';
+import { QuantumApplicationUpload } from '../models/quantum-application-upload';
 import { MatDrawer } from '@angular/material/sidenav';
-import { EventService } from '../services/event.service';
-import { RegisterEventsComponent } from '../dialogs/register-events/register-events.component';
-import { GenerateEventComponent } from '../dialogs/generate-event/generate-event.component';
-import { FireEventDto } from '../models/FireEventDto';
-import { InvokeActionComponent } from '../dialogs/invoke-action/invoke-action.component';
+import { EventTriggerService } from '../services/event-trigger.service';
+import { RegisterEventTriggersComponent } from '../dialogs/register-event-triggers/register-event-triggers.component';
+import { InvokeQuantumApplicationComponent } from '../dialogs/invoke-quantum-application/invoke-quantum-application.component';
 import { ToastService } from '../services/toast.service';
 
 @Component({
@@ -20,13 +18,13 @@ export class QuantumApplicationListComponent implements OnInit {
 
   quantumApplications: any[] = [];
   selectedApplication: any = undefined;
-  applicationEvents: any[] = [];
+  applicationEventTriggers: any[] = [];
   reader: FileReader = new FileReader();
 
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
 
   constructor(private quantumApplicationService: QuantumApplicationService,
-              private eventService: EventService,
+              private eventService: EventTriggerService,
               private toastService: ToastService,
               private dialog: MatDialog) { }
 
@@ -46,14 +44,14 @@ export class QuantumApplicationListComponent implements OnInit {
     });
   }
 
-  getApplicationEvents(url: string): void {
-      this.quantumApplicationService.getApplicationEvents(url).subscribe(response => {
-        this.applicationEvents = response._embedded ? response._embedded.eventDtoList : [];
+  getApplicationEventTriggers(url: string): void {
+      this.quantumApplicationService.getApplicationEventTriggers(url).subscribe(response => {
+        this.applicationEventTriggers = response._embedded ? response._embedded.eventTriggerDtoList : [];
       });
   }
 
   addQuantumApplication(): void {
-    const dialogRef = this.dialog.open(AddApplicationComponent, {
+    const dialogRef = this.dialog.open(AddQuantumApplicationComponent, {
       data: {
         title: 'Add new Quantum-Application',
         name: '',
@@ -82,7 +80,7 @@ export class QuantumApplicationListComponent implements OnInit {
   selectApplication(application: any): void {
     if (!this.selectedApplication || this.selectedApplication.id !== application.id) {
       this.selectedApplication = application;
-      this.getApplicationEvents(application._links.events.href);
+      this.getApplicationEventTriggers(application._links.eventTriggers.href);
       this.downloadApplicationScript(application, false);
     }
     this.drawer?.open();
@@ -90,39 +88,39 @@ export class QuantumApplicationListComponent implements OnInit {
 
   closeDetailsView(): void {
     this.drawer?.close();
-    this.applicationEvents = [];
+    this.applicationEventTriggers = [];
     this.selectedApplication = undefined;
   }
 
-  unregisterApplicationFromEvent(selectedApplication: any, event: any) {
-    this.eventService.unregisterApplication(event.name, selectedApplication.name).subscribe(() => {
-      this.getApplicationEvents(selectedApplication._links.events.href);
+  unregisterApplicationFromEventTrigger(selectedApplication: any, eventTrigger: any) {
+    this.eventService.unregisterApplication(eventTrigger.name, selectedApplication.name).subscribe(() => {
+      this.getApplicationEventTriggers(selectedApplication._links.eventTriggers.href);
     });
   }
 
-  generateEventTypeDisplay(event: any): string {
-    if (event.type === 'QUEUE_SIZE') {
-      return event.type + ' <= ' + event.additionalProperties.queueSize;
+  generateEventTypeDisplay(eventTrigger: any): string {
+    if (eventTrigger.eventType === 'QUEUE_SIZE') {
+      return eventTrigger.eventType + ' <= ' + eventTrigger.additionalProperties.queueSize;
     }
-    return event.name;
+    return eventTrigger.name;
   }
 
-  openRegisterEventsDialog(): void {
-    const dialogRef = this.dialog.open(RegisterEventsComponent, {
+  openRegisterEventTriggersDialog(): void {
+    const dialogRef = this.dialog.open(RegisterEventTriggersComponent, {
       width: '50%',
       data: {
         application: this.selectedApplication,
-        registeredEvents: this.applicationEvents
+        registeredEventTriggers: this.applicationEventTriggers
       },
     });
 
     dialogRef.afterClosed().subscribe(() => {
-     this.getApplicationEvents(this.selectedApplication._links.events.href);
+     this.getApplicationEventTriggers(this.selectedApplication._links.events.href);
     });
   }
 
   invokeApplication(application: any): void {
-    const dialogRef = this.dialog.open(InvokeActionComponent, {
+    const dialogRef = this.dialog.open(InvokeQuantumApplicationComponent, {
       data: {
         applicationName: application.name,
       },

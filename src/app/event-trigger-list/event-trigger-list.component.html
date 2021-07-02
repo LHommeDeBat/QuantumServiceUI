@@ -1,5 +1,5 @@
 <mat-card class="m-3">
-  <button type="button" class="btn btn-success" (click)="addEvent()">
+  <button type="button" class="btn btn-success" (click)="addEventTrigger()">
     <i class="bi bi-plus"></i>
   </button>
   <button type="button" class="btn btn-primary mx-1" (click)="fireEvent()">
@@ -9,23 +9,23 @@
     <thead>
     <tr>
       <th>Name</th>
-      <th>Type</th>
+      <th>Event Type</th>
       <th class="col-3">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let event of events">
-      <td>{{ event.name }}</td>
-      <td>{{ generateTypeDisplay(event) }}</td>
+    <tr *ngFor="let eventTrigger of eventTriggers">
+      <td>{{ eventTrigger.name }}</td>
+      <td>{{ generateTypeDisplay(eventTrigger) }}</td>
       <td class="col-3">
-        <button type="button" class="btn btn-danger btn-sm" (click)="deleteEvent(event._links.self.href)">
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteEventTrigger(eventTrigger._links.self.href)">
           <i class="bi bi-trash"></i>
         </button>
       </td>
     </tr>
-    <tr *ngIf="events.length === 0">
+    <tr *ngIf="eventTriggers.length === 0">
       <div class="mt-1">
-        No events found!
+        No event triggers found!
       </div>
     </tr>
     </tbody>

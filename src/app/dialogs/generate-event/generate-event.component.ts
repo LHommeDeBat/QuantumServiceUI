@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FireEventDto } from '../../models/FireEventDto';
+import { FireEventDto } from '../../models/fire-event-dto';
 import { IbmqService } from '../../services/ibmq.service';
 
 @Component({

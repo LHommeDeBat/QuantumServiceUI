@@ -4,10 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-application',
-  templateUrl: './add-application.component.html',
-  styleUrls: ['./add-application.component.scss']
+  templateUrl: './add-quantum-application.component.html',
+  styleUrls: ['./add-quantum-application.component.scss']
 })
-export class AddApplicationComponent implements OnInit {
+export class AddQuantumApplicationComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl(this.data.name, [
@@ -21,7 +21,7 @@ export class AddApplicationComponent implements OnInit {
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private dialogRef: MatDialogRef<AddApplicationComponent>) {
+              private dialogRef: MatDialogRef<AddQuantumApplicationComponent>) {
   }
 
   ngOnInit(): void {

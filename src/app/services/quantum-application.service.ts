@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { QuantumApplicationUpload } from '../models/QuantumApplicationUpload';
+import { QuantumApplicationUpload } from '../models/quantum-application-upload';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class QuantumApplicationService {
     return this.http.get<any>(this.url);
   }
 
-  getApplicationEvents(url: string): Observable<any> {
+  getApplicationEventTriggers(url: string): Observable<any> {
     return this.http.get<any>(url);
   }
 
