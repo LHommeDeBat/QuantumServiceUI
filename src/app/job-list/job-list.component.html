@@ -19,18 +19,29 @@
 
     <mat-card class="m-3" *ngIf="selectedJob">
       <mat-form-field class="w-100">
+        <mat-label>Device</mat-label>
+        <input matInput [(ngModel)]="selectedJob.device" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob">
+      <mat-form-field class="w-100">
         <mat-label>Status</mat-label>
         <input matInput [(ngModel)]="selectedJob.status" readonly>
       </mat-form-field>
     </mat-card>
 
     <mat-card class="m-3" *ngIf="selectedJob">
+      <mat-form-field class="w-100" *ngIf="selectedJob.scriptExecutionDate">
+        <mat-label>Script executed at</mat-label>
+        <input matInput [ngModel]="selectedJob.scriptExecutionDate | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
       <mat-form-field class="w-50" *ngIf="selectedJob.creationDate">
-        <mat-label>Creation Date</mat-label>
+        <mat-label>Created at</mat-label>
         <input matInput [ngModel]="selectedJob.creationDate | date:'MMMM d, y, H:mm:ss'" readonly>
       </mat-form-field>
       <mat-form-field class="w-50" *ngIf="selectedJob.endDate">
-        <mat-label>End Date</mat-label>
+        <mat-label>Finished at</mat-label>
         <input matInput [ngModel]="selectedJob.endDate | date:'MMMM d, y, H:mm:ss'" readonly>
       </mat-form-field>
     </mat-card>
@@ -48,16 +59,48 @@
     <table class="table">
       <thead>
       <tr>
-        <th>IBMQ ID</th>
-        <th>Status</th>
-        <th>Creation Date</th>
-        <th>End Date</th>
+        <th>
+          <a (click)="changeSort('device')">Device
+            <i *ngIf="checkSort('device') !== 'none'"
+               [ngClass]="checkSort('device') === 'desc' ? 'bi bi-arrow-down' : 'bi bi-arrow-up'">
+            </i>
+          </a>
+        </th>
+        <th>
+          <a (click)="changeSort('status')">Status
+            <i *ngIf="checkSort('status') !== 'none'"
+               [ngClass]="checkSort('status') === 'desc' ? 'bi bi-arrow-down' : 'bi bi-arrow-up'">
+            </i>
+          </a>
+        </th>
+        <th>
+          <a (click)="changeSort('scriptExecutionDate')">Script executed at
+            <i *ngIf="checkSort('scriptExecutionDate') !== 'none'"
+               [ngClass]="checkSort('scriptExecutionDate') === 'desc' ? 'bi bi-arrow-down' : 'bi bi-arrow-up'">
+            </i>
+          </a>
+        </th>
+        <th>
+          <a (click)="changeSort('creationDate')">Created at
+            <i *ngIf="checkSort('creationDate') !== 'none'"
+               [ngClass]="checkSort('creationDate') === 'desc' ? 'bi bi-arrow-down' : 'bi bi-arrow-up'">
+            </i>
+          </a>
+        </th>
+        <th>
+          <a (click)="changeSort('endDate')">Finished at
+            <i *ngIf="checkSort('endDate') !== 'none'"
+               [ngClass]="checkSort('endDate') === 'desc' ? 'bi bi-arrow-down' : 'bi bi-arrow-up'">
+            </i>
+          </a>
+        </th>
       </tr>
       </thead>
       <tbody>
       <tr class="job-row" *ngFor="let job of jobs" (click)="selectJob(job)">
-        <td>{{ job.ibmqId }}</td>
+        <td>{{ job.device }}</td>
         <td>{{ job.status }}</td>
+        <td>{{ job.scriptExecutionDate | date:'MMMM d, y, H:mm:ss' }}</td>
         <td>{{ job.creationDate | date:'MMMM d, y, H:mm:ss' }}</td>
         <td>{{ job.endDate | date:'MMMM d, y, H:mm:ss' }}</td>
       </tr>
@@ -67,6 +110,40 @@
         </div>
       </tr>
       </tbody>
+      <tfoot *ngIf="this.paginationLinks">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link"
+               [ngClass]="!this.paginationLinks.first || this.paginationLinks.first.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+               (click)="getJobs(this.paginationLinks.first.href)">First
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link"
+               [ngClass]="!this.paginationLinks.prev || this.paginationLinks.prev.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+               (click)="getJobs(this.paginationLinks.prev.href)">Previous
+            </a>
+          </li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link current-page"
+               [ngClass]="{'page-disabled': !this.paginationLinks.self}">{{ this.paginationDetails.number + 1 }}
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link"
+               [ngClass]="!this.paginationLinks.next || this.paginationLinks.next.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+               (click)="getJobs(this.paginationLinks.next.href)">Next
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" [ngClass]="!this.paginationLinks.last || this.paginationLinks.last.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+               (click)="getJobs(this.paginationLinks.last.href)">Last
+            </a>
+          </li>
+        </ul>
+      </nav>
+      </tfoot>
     </table>
   </mat-card>
 </mat-drawer-container>

@@ -11,3 +11,12 @@
   color: red;
   cursor: pointer;
 }
+
+th a {
+  display: block;
+  color: blue !important;
+}
+
+th a:hover {
+  color: blue !important;
+}
