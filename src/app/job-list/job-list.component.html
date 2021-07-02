@@ -110,40 +110,54 @@
         </div>
       </tr>
       </tbody>
-      <tfoot *ngIf="this.paginationLinks">
-      <nav>
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link"
-               [ngClass]="!this.paginationLinks.first || this.paginationLinks.first.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
-               (click)="getJobs(this.paginationLinks.first.href)">First
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link"
-               [ngClass]="!this.paginationLinks.prev || this.paginationLinks.prev.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
-               (click)="getJobs(this.paginationLinks.prev.href)">Previous
-            </a>
-          </li>
-          <li class="page-item active" aria-current="page">
-            <a class="page-link current-page"
-               [ngClass]="{'page-disabled': !this.paginationLinks.self}">{{ this.paginationDetails.number + 1 }}
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link"
-               [ngClass]="!this.paginationLinks.next || this.paginationLinks.next.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
-               (click)="getJobs(this.paginationLinks.next.href)">Next
-            </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" [ngClass]="!this.paginationLinks.last || this.paginationLinks.last.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
-               (click)="getJobs(this.paginationLinks.last.href)">Last
-            </a>
-          </li>
-        </ul>
-      </nav>
-      </tfoot>
     </table>
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Page size</mat-label>
+          <mat-select [(value)]="pageSize" (selectionChange)="getJobs()">
+            <mat-option [value]="1">1</mat-option>
+            <mat-option [value]="10">10</mat-option>
+            <mat-option [value]="25">25</mat-option>
+            <mat-option [value]="50">50</mat-option>
+            <mat-option [value]="100">100</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <nav *ngIf="paginationLinks">
+          <ul class="pagination justify-content-end">
+            <li class="page-item">
+              <a class="page-link"
+                 [ngClass]="!this.paginationLinks.first || this.paginationLinks.first.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+                 (click)="getJobs(this.paginationLinks.first.href)">First
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link"
+                 [ngClass]="!this.paginationLinks.prev || this.paginationLinks.prev.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+                 (click)="getJobs(this.paginationLinks.prev.href)">Previous
+              </a>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <a class="page-link current-page"
+                 [ngClass]="{'page-disabled': !this.paginationLinks.self}">{{ this.paginationDetails.number + 1 }}
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link"
+                 [ngClass]="!this.paginationLinks.next || this.paginationLinks.next.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+                 (click)="getJobs(this.paginationLinks.next.href)">Next
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" [ngClass]="!this.paginationLinks.last || this.paginationLinks.last.href === this.paginationLinks.self.href ? 'page-disabled': 'page-enabled'"
+                 (click)="getJobs(this.paginationLinks.last.href)">Last
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </mat-card>
 </mat-drawer-container>

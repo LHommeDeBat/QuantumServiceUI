@@ -11,7 +11,7 @@ export class JobListComponent implements OnInit {
 
   // Pagination variables
   page: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 25;
   sort: any = {};
 
   jobs: any[] = [];
