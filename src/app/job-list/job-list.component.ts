@@ -14,6 +14,17 @@ export class JobListComponent implements OnInit {
   pageSize: number = 25;
   sort: any = {};
 
+  // Filter variables
+  availableStatuses: string[] = [
+    'CREATING',
+    'CREATED',
+    'VALIDATING',
+    'VALIDATED',
+    'RUNNING',
+    'COMPLETED'
+  ];
+  statusFilter: string[] = [];
+
   jobs: any[] = [];
   selectedJob: any = undefined;
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
@@ -28,7 +39,7 @@ export class JobListComponent implements OnInit {
   }
 
   getJobs(url?: string): void {
-    this.jobService.getJobs(this.page, this.pageSize, this.sort, url).subscribe(response => {
+    this.jobService.getJobs(this.page, this.pageSize, this.sort, this.statusFilter, url).subscribe(response => {
       this.jobs = response._embedded ? response._embedded.jobDtoList : [];
       this.paginationLinks = response._links ? response._links : undefined;
       this.paginationDetails = response.page ? response.page : undefined;

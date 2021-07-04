@@ -56,6 +56,12 @@
 
   <!-- Application Main-View -->
   <mat-card class="m-3">
+    <mat-form-field class="float-end">
+      <mat-label>Filter by status</mat-label>
+      <mat-select [(ngModel)]="statusFilter" (selectionChange)="getJobs()" multiple>
+        <mat-option *ngFor="let status of availableStatuses" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <table class="table">
       <thead>
       <tr>

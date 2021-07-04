@@ -11,7 +11,7 @@ export class JobService {
 
   constructor(private http: HttpClient) { }
 
-  getJobs(page: number, size: number, sort: any, url?: string): Observable<any> {
+  getJobs(page: number, size: number, sort: any, statusFilter: string[], url?: string): Observable<any> {
     // Setup log namespace query parameter
     let params = new HttpParams();
     if (!url) {
@@ -20,6 +20,10 @@ export class JobService {
 
       for (const fieldSort in sort) {
         params = params.append('sort', fieldSort + ',' + sort[fieldSort])
+      }
+
+      for (const status of statusFilter) {
+        params = params.append('statusFilter', status);
       }
     }
 
