@@ -18,14 +18,11 @@
     </mat-card>
 
     <mat-card class="m-3" *ngIf="selectedJob">
-      <mat-form-field class="w-100">
+      <mat-form-field class="w-50">
         <mat-label>Device</mat-label>
         <input matInput [(ngModel)]="selectedJob.device" readonly>
       </mat-form-field>
-    </mat-card>
-
-    <mat-card class="m-3" *ngIf="selectedJob">
-      <mat-form-field class="w-100">
+      <mat-form-field class="w-50">
         <mat-label>Status</mat-label>
         <input matInput [(ngModel)]="selectedJob.status" readonly>
       </mat-form-field>
