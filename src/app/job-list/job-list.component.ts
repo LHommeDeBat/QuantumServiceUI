@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { JobService } from '../services/job.service';
 import { MatDrawer } from '@angular/material/sidenav';
 
@@ -7,12 +7,15 @@ import { MatDrawer } from '@angular/material/sidenav';
   templateUrl: './job-list.component.html',
   styleUrls: ['./job-list.component.scss']
 })
-export class JobListComponent implements OnInit {
+export class JobListComponent implements OnInit, OnDestroy {
 
   // Pagination variables
   page: number = 0;
   pageSize: number = 25;
-  sort: any = {};
+  sort: any = {
+    scriptExecutionDate: 'desc'
+  };
+  jobTimer: any;
 
   // Filter variables
   availableStatuses: string[] = [
@@ -36,6 +39,21 @@ export class JobListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getJobs();
+    this.startJobTimer();
+  }
+
+  ngOnDestroy(): void {
+    this.stopTimer();
+  }
+
+  startJobTimer(): void {
+    this.jobTimer = setInterval(() => {
+      this.getJobs();
+    },10000)
+  }
+
+  stopTimer(): void {
+    clearInterval(this.jobTimer);
   }
 
   getJobs(url?: string): void {
