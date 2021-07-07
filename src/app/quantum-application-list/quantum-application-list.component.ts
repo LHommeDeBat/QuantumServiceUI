@@ -115,7 +115,7 @@ export class QuantumApplicationListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-     this.getApplicationEventTriggers(this.selectedApplication._links.events.href);
+     this.getApplicationEventTriggers(this.selectedApplication._links.eventTriggers.href);
     });
   }
 
