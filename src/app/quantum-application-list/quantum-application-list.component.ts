@@ -52,6 +52,7 @@ export class QuantumApplicationListComponent implements OnInit {
 
   addQuantumApplication(): void {
     const dialogRef = this.dialog.open(AddQuantumApplicationComponent, {
+      width: '50%',
       data: {
         title: 'Add new Quantum-Application',
         name: '',
@@ -62,7 +63,8 @@ export class QuantumApplicationListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
         const dto: QuantumApplicationUpload = {
-          name: data.name
+          name: data.name,
+          parameters: data.parameters
         }
         this.quantumApplicationService.createQuantumApplication(dto, data.file).subscribe(() => {
           this.getQuantumApplications();
