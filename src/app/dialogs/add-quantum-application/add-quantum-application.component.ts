@@ -31,7 +31,6 @@ export class AddQuantumApplicationComponent implements OnInit {
       this.data.name = this.name ? this.name.value : undefined;
       this.data.file = this.file ? this.file.value : undefined;
       this.data.parameters = this.buildParameters();
-      console.log(this.data.parameters);
     });
   }
 
