@@ -20,6 +20,14 @@
       </mat-form-field>
     </mat-card>
 
+    <mat-card class="m-3" *ngIf="selectedApplication && getAmountOfParameters(selectedApplication) > 0">
+      <h4>Parameters with default values</h4>
+      <mat-form-field class="w-100" *ngFor="let parameter of selectedApplication.parameters | keyvalue">
+        <mat-label>{{ parameter.key }}</mat-label>
+        <input matInput [ngModel]="getParameterDefaultValue(parameter.value)" readonly>
+      </mat-form-field>
+    </mat-card>
+
     <mat-card class="m-3" *ngIf="selectedApplication && selectedApplication.script">
       <mat-form-field class="w-100">
         <mat-label>Script</mat-label>
@@ -88,12 +96,14 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Parameters</th>
         <th class="col-3">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr class="application-row" *ngFor="let application of quantumApplications" (click)="selectApplication(application)">
         <td>{{ application.name }}</td>
+        <td>{{ getAmountOfParameters(application) }}</td>
         <td class="col-3">
           <button type="button" class="btn btn-primary btn-sm" (click)="invokeApplication(application); $event.stopPropagation()">
             <i class="bi bi-play"></i>

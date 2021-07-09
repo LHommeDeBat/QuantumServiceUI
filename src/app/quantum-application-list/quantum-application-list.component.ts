@@ -154,4 +154,12 @@ export class QuantumApplicationListComponent implements OnInit {
       }
     });
   }
+
+  getAmountOfParameters(application: any): number {
+    return Object.keys(application.parameters).length
+  }
+
+  getParameterDefaultValue(parameter: any): any {
+    return parameter.defaultValue;
+  }
 }
