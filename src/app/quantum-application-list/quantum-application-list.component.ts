@@ -125,6 +125,7 @@ export class QuantumApplicationListComponent implements OnInit {
     const dialogRef = this.dialog.open(InvokeQuantumApplicationComponent, {
       data: {
         applicationName: application.name,
+        applicationParameters: application.parameters,
       },
     });
 
@@ -133,6 +134,7 @@ export class QuantumApplicationListComponent implements OnInit {
         const dto: any = {
           device: data.device,
           replyTo: data.replyTo,
+          parameters: data.applicationParameters,
         };
 
         this.quantumApplicationService.invokeApplication(application._links.invoke.href, dto).subscribe(() => {
