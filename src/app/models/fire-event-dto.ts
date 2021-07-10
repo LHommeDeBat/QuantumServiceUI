@@ -3,4 +3,5 @@ export class FireEventDto {
   replyTo?: string;
   eventType?: string;
   additionalProperties: any;
+  parameters?: any;
 }

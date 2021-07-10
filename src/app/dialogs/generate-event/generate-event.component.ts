@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FireEventDto } from '../../models/fire-event-dto';
 import { IbmqService } from '../../services/ibmq.service';
@@ -14,21 +14,20 @@ export class GenerateEventComponent implements OnInit {
   availableDevices: string[] = [];
   loadingDevices: boolean = true;
 
+  parametersNameForm = new FormArray([]);
+  parametersValueForm = new FormArray([]);
+
   form = new FormGroup({
     device: new FormControl('no-devices', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
     eventType: new FormControl(this.data.eventType ? this.data.eventType : 'QUEUE_SIZE', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
     replyTo: new FormControl(this.data.replyTo ? this.data.replyTo : 'JOB.RESULT.QUEUE', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
     queueSize: new FormControl(this.data.additionalProperties && this.data.additionalProperties.queueSize ? this.data.additionalProperties.queueSize : undefined, [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ])
   });
@@ -59,6 +58,9 @@ export class GenerateEventComponent implements OnInit {
       if (this.data.eventType === 'QUEUE_SIZE') {
         this.data.additionalProperties.queueSize = this.queueSize ? this.queueSize.value : undefined;
       }
+      for (let i = 0; i < this.parametersNameForm.length; i++) {
+        this.data.additionalProperties[this.parametersNameForm.at(i).value.toString()] = this.parametersValueForm.at(i).value;
+      }
     });
   }
 
@@ -78,6 +80,16 @@ export class GenerateEventComponent implements OnInit {
     return this.form ? this.form.get('queueSize') : null;
   }
 
+  removeParameter(index: number) {
+    this.parametersNameForm.removeAt(index);
+    this.parametersValueForm.removeAt(index);
+  }
+
+  addParameter(): void {
+    this.parametersNameForm.push(new FormControl('', Validators.required));
+    this.parametersValueForm.push(new FormControl('', Validators.required));
+  }
+
   isRequiredDataMissing(): boolean {
     // @ts-ignore
     return (
@@ -85,7 +97,23 @@ export class GenerateEventComponent implements OnInit {
       this.device?.errors?.required ||
       this.eventType?.errors?.required ||
       this.replyTo?.errors?.required ||
-      (this.eventType?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required));
+      (this.eventType?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required) ||
+      this.checkParameters()
+    );
+  }
+
+  checkParameters(): boolean {
+    for (const control of this.parametersNameForm.controls) {
+      if (control.errors?.required) {
+        return true;
+      }
+    }
+    for (const control of this.parametersValueForm.controls) {
+      if (control.errors?.required) {
+        return true;
+      }
+    }
+    return false;
   }
 
   close(): void {
