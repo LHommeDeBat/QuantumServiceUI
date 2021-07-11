@@ -134,7 +134,7 @@ export class QuantumApplicationListComponent implements OnInit {
         const dto: any = {
           device: data.device,
           replyTo: data.replyTo,
-          additionalProperties: this.mapToObject(data.applicationParameters)
+          additionalProperties: data.applicationParameters
         };
 
         console.log(dto);

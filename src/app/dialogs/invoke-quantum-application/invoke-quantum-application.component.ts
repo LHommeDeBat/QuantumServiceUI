@@ -80,16 +80,26 @@ export class InvokeQuantumApplicationComponent implements OnInit {
     return this.data.applicationParameters && Object.keys(this.data.applicationParameters).length > 0;
   }
 
-  getInputType(type: string): string {
+  getParameterList(): string[] {
+    return this.data.applicationParameters ? Object.keys(this.data.applicationParameters) : [];
+  }
+
+  getInputType(parameter: string): string {
+    const type = this.getParameterType(parameter);
     return type === 'FLOAT' || type === 'INTEGER' ? 'number' : 'text';
   }
 
+  getParameterType(parameter: string): string {
+    return this.data.applicationParameters[parameter].type;
+  }
+
   buildParameters(): any {
-    let parameters: Map<string, any> = new Map<string, any>();
+    let parameters = {};
 
     let i = 0;
     for (const key in this.data.applicationParameters) {
-      parameters.set(key, this.parametersForm.at(i).value);
+      // @ts-ignore
+      parameters[key] = this.parametersForm.at(i).value;
       i++;
     }
     return parameters;
@@ -98,7 +108,7 @@ export class InvokeQuantumApplicationComponent implements OnInit {
 
 export interface InvokeApplicationForm {
   applicationName: string;
-  applicationParameters: Map<string, any>;
+  applicationParameters: any;
   device: string;
   replyTo: string;
 }
