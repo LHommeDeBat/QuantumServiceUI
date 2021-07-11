@@ -29,4 +29,8 @@ export class JobService {
 
     return this.http.get<any>(url ? url : this.url, { params: params });
   }
+
+  getJobApplication(url: string): Observable<any> {
+    return this.http.get<any>(url);
+  }
 }

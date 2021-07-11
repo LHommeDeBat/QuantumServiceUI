@@ -134,8 +134,10 @@ export class QuantumApplicationListComponent implements OnInit {
         const dto: any = {
           device: data.device,
           replyTo: data.replyTo,
-          parameters: data.applicationParameters,
+          additionalProperties: this.mapToObject(data.applicationParameters)
         };
+
+        console.log(dto);
 
         this.quantumApplicationService.invokeApplication(application._links.invoke.href, dto).subscribe(() => {
           this.toastService.displayToast('Application invocation was successfully transmitted!');
@@ -163,5 +165,14 @@ export class QuantumApplicationListComponent implements OnInit {
 
   getParameterDefaultValue(parameter: any): any {
     return parameter.defaultValue;
+  }
+
+  mapToObject(map: Map<string, string>): any {
+    const object = {};
+    for (const key of map.keys()) {
+      // @ts-ignore
+      object[key] = map.get(key);
+    }
+    return object;
   }
 }
