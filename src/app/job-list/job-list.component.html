@@ -54,6 +54,14 @@
       </mat-form-field>
 
       <h4>Used Parameters</h4>
+      <mat-form-field class="w-100">
+        <mat-label>device</mat-label>
+        <input matInput [ngModel]="selectedJob.device" readonly>
+      </mat-form-field>
+      <mat-form-field class="w-100">
+        <mat-label>apiToken</mat-label>
+        <input matInput [ngModel]="'**********************'" readonly>
+      </mat-form-field>
       <mat-form-field class="w-100" *ngFor="let parameter of selectedJob.usedParameters | keyvalue">
         <mat-label>{{ parameter.key }}</mat-label>
         <input matInput [ngModel]="parameter.value" readonly>
