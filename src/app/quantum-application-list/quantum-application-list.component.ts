@@ -52,6 +52,7 @@ export class QuantumApplicationListComponent implements OnInit {
 
   addQuantumApplication(): void {
     const dialogRef = this.dialog.open(AddQuantumApplicationComponent, {
+      width: '50%',
       data: {
         title: 'Add new Quantum-Application',
         name: '',
@@ -62,7 +63,8 @@ export class QuantumApplicationListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (data) {
         const dto: QuantumApplicationUpload = {
-          name: data.name
+          name: data.name,
+          parameters: data.parameters
         }
         this.quantumApplicationService.createQuantumApplication(dto, data.file).subscribe(() => {
           this.getQuantumApplications();
@@ -123,6 +125,7 @@ export class QuantumApplicationListComponent implements OnInit {
     const dialogRef = this.dialog.open(InvokeQuantumApplicationComponent, {
       data: {
         applicationName: application.name,
+        applicationParameters: application.parameters,
       },
     });
 
@@ -131,6 +134,7 @@ export class QuantumApplicationListComponent implements OnInit {
         const dto: any = {
           device: data.device,
           replyTo: data.replyTo,
+          additionalProperties: data.applicationParameters
         };
 
         this.quantumApplicationService.invokeApplication(application._links.invoke.href, dto).subscribe(() => {
@@ -151,5 +155,13 @@ export class QuantumApplicationListComponent implements OnInit {
         this.reader.readAsText(response);
       }
     });
+  }
+
+  getAmountOfParameters(application: any): number {
+    return Object.keys(application.parameters).length
+  }
+
+  getParameterDefaultValue(parameter: any): any {
+    return parameter.defaultValue;
   }
 }

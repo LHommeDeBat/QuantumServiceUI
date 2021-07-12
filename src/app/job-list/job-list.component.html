@@ -18,6 +18,10 @@
     </mat-card>
 
     <mat-card class="m-3" *ngIf="selectedJob">
+      <mat-form-field class="w-100" *ngIf="selectedJob && selectedJob.quantumApplication">
+        <mat-label>Quantum-Application</mat-label>
+        <input matInput [(ngModel)]="selectedJob.quantumApplication.name" readonly>
+      </mat-form-field>
       <mat-form-field class="w-50">
         <mat-label>Device</mat-label>
         <input matInput [(ngModel)]="selectedJob.device" readonly>
@@ -40,6 +44,27 @@
       <mat-form-field class="w-50" *ngIf="selectedJob.endDate">
         <mat-label>Finished at</mat-label>
         <input matInput [ngModel]="selectedJob.endDate | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob && selectedJob.quantumApplication.script">
+      <mat-form-field class="w-100">
+        <mat-label>Script</mat-label>
+        <textarea matInput [ngModel]="selectedJob.quantumApplication.script" [matTextareaAutosize]="true" readonly></textarea>
+      </mat-form-field>
+
+      <h4>Used Parameters</h4>
+      <mat-form-field class="w-100">
+        <mat-label>device</mat-label>
+        <input matInput [ngModel]="selectedJob.device" readonly>
+      </mat-form-field>
+      <mat-form-field class="w-100">
+        <mat-label>apiToken</mat-label>
+        <input matInput [ngModel]="'**********************'" readonly>
+      </mat-form-field>
+      <mat-form-field class="w-100" *ngFor="let parameter of selectedJob.usedParameters | keyvalue">
+        <mat-label>{{ parameter.key }}</mat-label>
+        <input matInput [ngModel]="parameter.value" readonly>
       </mat-form-field>
     </mat-card>
 
@@ -69,6 +94,13 @@
     <table class="table">
       <thead>
       <tr>
+        <th>
+          <a (click)="changeSort('quantumApplication.name')">Quantum-Application
+            <i *ngIf="checkSort('quantumApplication.name') !== 'none'"
+               [ngClass]="checkSort('quantumApplication.name') === 'desc' ? 'bi bi-arrow-down' : 'bi bi-arrow-up'">
+            </i>
+          </a>
+        </th>
         <th>
           <a (click)="changeSort('device')">Device
             <i *ngIf="checkSort('device') !== 'none'"
@@ -108,6 +140,7 @@
       </thead>
       <tbody>
       <tr class="job-row" *ngFor="let job of jobs" (click)="selectJob(job)">
+        <td>{{ job.quantumApplication ? job.quantumApplication.name : '' }}</td>
         <td>{{ job.device }}</td>
         <td>{{ job.status }}</td>
         <td>{{ job.scriptExecutionDate | date:'MMMM d, y, H:mm:ss' }}</td>

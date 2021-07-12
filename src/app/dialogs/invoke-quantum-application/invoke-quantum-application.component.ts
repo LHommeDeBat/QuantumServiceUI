@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FireEventDto } from '../../models/fire-event-dto';
 import { IbmqService } from '../../services/ibmq.service';
 
 @Component({
@@ -13,6 +12,7 @@ export class InvokeQuantumApplicationComponent implements OnInit {
 
   availableDevices: string[] = [];
   loadingDevices: boolean = true;
+  parametersForm = new FormArray([]);
 
   form = new FormGroup({
     device: new FormControl('no-devices', [
@@ -31,6 +31,9 @@ export class InvokeQuantumApplicationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    for (const parameter in this.data.applicationParameters) {
+      this.parametersForm.push(new FormControl('', Validators.required));
+    }
     this.ibmqService.getAvailableDevices().subscribe(response => {
       this.loadingDevices = false;
       this.availableDevices = response ? response : [];
@@ -43,6 +46,7 @@ export class InvokeQuantumApplicationComponent implements OnInit {
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.device = this.device ? this.device.value : undefined;
       this.data.replyTo = this.replyTo ? this.replyTo.value : undefined;
+      this.data.applicationParameters = this.parametersAvailable() ? this.buildParameters() : undefined;
     });
   }
 
@@ -56,16 +60,55 @@ export class InvokeQuantumApplicationComponent implements OnInit {
 
   isRequiredDataMissing(): boolean {
     // @ts-ignore
-    return (this.availableDevices.length === 0 || this.device?.errors?.required || this.replyTo?.errors?.required);
+    return (this.availableDevices.length === 0 || this.device?.errors?.required || this.replyTo?.errors?.required || this.checkParameters());
+  }
+
+  checkParameters(): boolean {
+    for (const control of this.parametersForm.controls) {
+      if (control.errors?.required) {
+        return true;
+      }
+    }
+    return false;
   }
 
   close(): void {
     this.dialogRef.close();
   }
+
+  parametersAvailable(): boolean {
+    return this.data.applicationParameters && Object.keys(this.data.applicationParameters).length > 0;
+  }
+
+  getParameterList(): string[] {
+    return this.data.applicationParameters ? Object.keys(this.data.applicationParameters) : [];
+  }
+
+  getInputType(parameter: string): string {
+    const type = this.getParameterType(parameter);
+    return type === 'FLOAT' || type === 'INTEGER' ? 'number' : 'text';
+  }
+
+  getParameterType(parameter: string): string {
+    return this.data.applicationParameters[parameter].type;
+  }
+
+  buildParameters(): any {
+    let parameters = {};
+
+    let i = 0;
+    for (const key in this.data.applicationParameters) {
+      // @ts-ignore
+      parameters[key] = this.parametersForm.at(i).value;
+      i++;
+    }
+    return parameters;
+  }
 }
 
 export interface InvokeApplicationForm {
   applicationName: string;
+  applicationParameters: any;
   device: string;
   replyTo: string;
 }
