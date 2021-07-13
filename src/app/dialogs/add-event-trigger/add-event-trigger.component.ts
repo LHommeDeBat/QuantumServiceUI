@@ -19,7 +19,11 @@ export class AddEventTriggerComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
-    queueSize: new FormControl(this.data.additionalProperties && this.data.additionalProperties.queueSize ? this.data.additionalProperties.queueSize : undefined, [
+    queueSize: new FormControl(this.data.queueSize ? this.data.queueSize : undefined, [
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      Validators.required
+    ]),
+    executedApplication: new FormControl(this.data.executedApplication ? this.data.executedApplication : undefined, [
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ])
@@ -30,15 +34,14 @@ export class AddEventTriggerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.data.additionalProperties) {
-      this.data.additionalProperties = {};
-    }
-
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.name = this.name ? this.name.value : undefined;
       this.data.eventType = this.eventType ? this.eventType.value : undefined;
       if (this.data.eventType === 'QUEUE_SIZE') {
-        this.data.additionalProperties.queueSize = this.queueSize ? this.queueSize.value : undefined;
+        this.data.queueSize = this.queueSize ? this.queueSize.value : undefined;
+      }
+      if (this.data.eventType === 'EXECUTION_RESULT') {
+        this.data.executedApplication = this
       }
     });
   }
@@ -55,16 +58,21 @@ export class AddEventTriggerComponent implements OnInit {
     return this.form ? this.form.get('queueSize') : null;
   }
 
+  get executedApplication(): AbstractControl | null {
+    return this.form ? this.form.get('executedApplication') : null;
+  }
+
   isRequiredDataMissing(): boolean {
     // @ts-ignore
     return (
       this.name?.errors?.required ||
       this.eventType?.errors?.required ||
-      (this.eventType?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required));
+      (this.eventType?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required) ||
+      (this.eventType?.value === 'EXECUTION_RESULT' && this.executedApplication?.errors?.required)
+    );
   }
 
   close(): void {
     this.dialogRef.close();
   }
-
 }

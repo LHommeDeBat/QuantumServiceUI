@@ -44,7 +44,8 @@ export class EventTriggerListComponent implements OnInit {
         const dto: EventTriggerDto = {
           name: data.name,
           eventType: data.eventType,
-          additionalProperties: data.additionalProperties,
+          queueSize: data.queueSize,
+          executedApplication: data.executedApplication
         };
 
         this.eventTriggerService.createEventTrigger(dto).subscribe(() => {
