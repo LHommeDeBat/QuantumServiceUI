@@ -16,6 +16,10 @@ export class QuantumApplicationService {
     return this.http.get<any>(this.url);
   }
 
+  getQuantumApplication(url: string): Observable<any> {
+    return this.http.get<any>(url);
+  }
+
   getApplicationEventTriggers(url: string): Observable<any> {
     return this.http.get<any>(url);
   }

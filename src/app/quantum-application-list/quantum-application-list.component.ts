@@ -47,6 +47,14 @@ export class QuantumApplicationListComponent implements OnInit {
   getApplicationEventTriggers(url: string): void {
       this.quantumApplicationService.getApplicationEventTriggers(url).subscribe(response => {
         this.applicationEventTriggers = response._embedded ? response._embedded.eventTriggers : [];
+
+        for (const eventTrigger of this.applicationEventTriggers) {
+          if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+            this.quantumApplicationService.getQuantumApplication(eventTrigger._links.executedApplication.href).subscribe( response => {
+              eventTrigger.executedApplication = response ? response : undefined;
+            });
+          }
+        }
       });
   }
 
@@ -104,6 +112,11 @@ export class QuantumApplicationListComponent implements OnInit {
     if (eventTrigger.eventType === 'QUEUE_SIZE') {
       return eventTrigger.eventType + ' <= ' + eventTrigger.queueSize;
     }
+
+    if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+      return eventTrigger.eventType + ' (' + eventTrigger.executedApplication.name + ')';
+    }
+
     return eventTrigger.eventType;
   }
 

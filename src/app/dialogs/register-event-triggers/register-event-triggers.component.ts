@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventTriggerService } from '../../services/event-trigger.service';
+import { QuantumApplicationService } from '../../services/quantum-application.service';
 
 @Component({
   selector: 'app-register-events',
@@ -13,6 +14,7 @@ export class RegisterEventTriggersComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: RegisterEventTriggers,
               private eventService: EventTriggerService,
+              private quantumApplicationService: QuantumApplicationService,
               private dialogRef: MatDialogRef<RegisterEventTriggersComponent>) { }
 
   ngOnInit(): void {
@@ -27,6 +29,11 @@ export class RegisterEventTriggersComponent implements OnInit {
       for (const eventTrigger of eventTriggers) {
         if (this.data.registeredEventTriggers.find(e => e.id === eventTrigger.id) == undefined) {
           this.availableEventTriggers.push(eventTrigger);
+          if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+            this.quantumApplicationService.getQuantumApplication(eventTrigger._links.executedApplication.href).subscribe( response => {
+              eventTrigger.executedApplication = response ? response : undefined;
+            });
+          }
         }
       }
     });
@@ -36,6 +43,11 @@ export class RegisterEventTriggersComponent implements OnInit {
     if (eventTrigger.eventType === 'QUEUE_SIZE') {
       return eventTrigger.eventType + ' <= ' + eventTrigger.queueSize;
     }
+
+    if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+      return eventTrigger.eventType + ' (' + eventTrigger.executedApplication.name + ')';
+    }
+
     return eventTrigger.eventType;
   }
 
