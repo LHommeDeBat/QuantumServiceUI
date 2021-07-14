@@ -58,6 +58,8 @@ export class EventTriggerListComponent implements OnInit {
           executedApplication: data.executedApplication
         };
 
+        console.log(dto);
+
         this.eventTriggerService.createEventTrigger(dto).subscribe(() => {
           this.getEventTriggers();
         });

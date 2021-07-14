@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { QuantumApplicationUpload } from '../models/quantum-application-upload';
 
@@ -12,8 +12,14 @@ export class QuantumApplicationService {
 
   constructor(private http: HttpClient) {}
 
-  getQuantumApplications(): Observable<any> {
-    return this.http.get<any>(this.url);
+  getQuantumApplications(noResultEventOnly?: boolean): Observable<any> {
+    // Setup log namespace query parameter
+    let params = new HttpParams();
+    if (noResultEventOnly) {
+      params = params.append('noResultEventOnly', noResultEventOnly);
+    }
+
+    return this.http.get<any>(this.url, { params: params });
   }
 
   getQuantumApplication(url: string): Observable<any> {

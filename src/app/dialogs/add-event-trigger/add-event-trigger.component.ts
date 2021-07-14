@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EventTriggerDto } from '../../models/event-trigger-dto';
+import { QuantumApplicationService } from '../../services/quantum-application.service';
 
 @Component({
   selector: 'app-add-event',
@@ -10,30 +11,33 @@ import { EventTriggerDto } from '../../models/event-trigger-dto';
 })
 export class AddEventTriggerComponent implements OnInit {
 
+  availableQuantumApplications: any[] = [];
+
   form = new FormGroup({
     name: new FormControl(this.data.name ? this.data.name : '', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
     eventType: new FormControl(this.data.eventType ? this.data.eventType : 'QUEUE_SIZE', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
     queueSize: new FormControl(this.data.queueSize ? this.data.queueSize : undefined, [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
     executedApplication: new FormControl(this.data.executedApplication ? this.data.executedApplication : undefined, [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ])
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: EventTriggerDto,
+              private quantumApplicationService: QuantumApplicationService,
               private dialogRef: MatDialogRef<AddEventTriggerComponent>) {
   }
 
   ngOnInit(): void {
+    this.quantumApplicationService.getQuantumApplications(true).subscribe(response => {
+      this.availableQuantumApplications = response._embedded ? response._embedded.quantumApplications : [];
+    });
+
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.name = this.name ? this.name.value : undefined;
       this.data.eventType = this.eventType ? this.eventType.value : undefined;
@@ -41,7 +45,7 @@ export class AddEventTriggerComponent implements OnInit {
         this.data.queueSize = this.queueSize ? this.queueSize.value : undefined;
       }
       if (this.data.eventType === 'EXECUTION_RESULT') {
-        this.data.executedApplication = this
+        this.data.executedApplication = this.executedApplication ? this.executedApplication.value : undefined;
       }
     });
   }

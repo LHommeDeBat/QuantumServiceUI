@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FireEventDto } from '../../models/fire-event-dto';
 import { IbmqService } from '../../services/ibmq.service';
+import { QuantumApplicationService } from '../../services/quantum-application.service';
 
 @Component({
   selector: 'app-generate-event',
@@ -12,6 +13,7 @@ import { IbmqService } from '../../services/ibmq.service';
 export class GenerateEventComponent implements OnInit {
 
   availableDevices: string[] = [];
+  quantumApplications: any[] = [];
   loadingDevices: boolean = true;
 
   parametersNameForm = new FormArray([]);
@@ -29,11 +31,15 @@ export class GenerateEventComponent implements OnInit {
     ]),
     queueSize: new FormControl(this.data.additionalProperties && this.data.additionalProperties.queueSize ? this.data.additionalProperties.queueSize : undefined, [
       Validators.required
+    ]),
+    executedApplication: new FormControl(this.data.executedApplication ? this.data.executedApplication : undefined, [
+      Validators.required
     ])
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: FireEventDto,
               private ibmqService: IbmqService,
+              private quantumApplicationService: QuantumApplicationService,
               private dialogRef: MatDialogRef<GenerateEventComponent>) {
   }
 
@@ -41,6 +47,10 @@ export class GenerateEventComponent implements OnInit {
     if (!this.data.additionalProperties) {
       this.data.additionalProperties = {};
     }
+
+    this.quantumApplicationService.getQuantumApplications().subscribe(response => {
+      this.quantumApplications = response._embedded ? response._embedded.quantumApplications : [];
+    });
 
     this.ibmqService.getAvailableDevices().subscribe(response => {
       this.loadingDevices = false;
@@ -57,6 +67,9 @@ export class GenerateEventComponent implements OnInit {
       this.data.replyTo = this.replyTo ? this.replyTo.value : undefined;
       if (this.data.eventType === 'QUEUE_SIZE') {
         this.data.additionalProperties.queueSize = this.queueSize ? this.queueSize.value : undefined;
+      }
+      if (this.data.eventType === 'EXECUTION_RESULT') {
+        this.data.additionalProperties.executedApplication = this.executedApplication ? this.executedApplication.value : undefined;
       }
       for (let i = 0; i < this.parametersNameForm.length; i++) {
         this.data.additionalProperties[this.parametersNameForm.at(i).value.toString()] = this.parametersValueForm.at(i).value;
@@ -78,6 +91,10 @@ export class GenerateEventComponent implements OnInit {
 
   get queueSize(): AbstractControl | null {
     return this.form ? this.form.get('queueSize') : null;
+  }
+
+  get executedApplication(): AbstractControl | null {
+    return this.form ? this.form.get('executedApplication') : null;
   }
 
   removeParameter(index: number) {
