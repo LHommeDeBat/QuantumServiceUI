@@ -22,7 +22,7 @@ export class RegisterEventTriggersComponent implements OnInit {
   getAvailableEventTriggers(): void {
     this.availableEventTriggers = [];
     this.eventService.getEventTriggers().subscribe(response => {
-      const eventTriggers = response._embedded ? response._embedded.eventTriggerDtoList : [];
+      const eventTriggers = response._embedded ? response._embedded.eventTriggers : [];
       // Filter only eventTriggers that are not already linked to current application
       for (const eventTrigger of eventTriggers) {
         if (this.data.registeredEventTriggers.find(e => e.id === eventTrigger.id) == undefined) {
@@ -34,9 +34,9 @@ export class RegisterEventTriggersComponent implements OnInit {
 
   generateEventTypeDisplay(eventTrigger: any): string {
     if (eventTrigger.eventType === 'QUEUE_SIZE') {
-      return eventTrigger.eventType + ' <= ' + eventTrigger.additionalProperties.queueSize;
+      return eventTrigger.eventType + ' <= ' + eventTrigger.queueSize;
     }
-    return eventTrigger.name;
+    return eventTrigger.eventType;
   }
 
   close(): void {
