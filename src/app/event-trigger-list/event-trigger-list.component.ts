@@ -6,6 +6,7 @@ import { AddEventTriggerComponent } from '../dialogs/add-event-trigger/add-event
 import { FireEventDto } from '../models/fire-event-dto';
 import { GenerateEventComponent } from '../dialogs/generate-event/generate-event.component';
 import { ToastService } from '../services/toast.service';
+import { QuantumApplicationService } from '../services/quantum-application.service';
 
 @Component({
   selector: 'app-event-list',
@@ -17,6 +18,7 @@ export class EventTriggerListComponent implements OnInit {
   eventTriggers: any[] = [];
 
   constructor(private eventTriggerService: EventTriggerService,
+              private quantumApplicationService: QuantumApplicationService,
               private toastService: ToastService,
               private dialog: MatDialog) {}
 
@@ -26,7 +28,15 @@ export class EventTriggerListComponent implements OnInit {
 
   getEventTriggers(): void {
     this.eventTriggerService.getEventTriggers().subscribe(response => {
-      this.eventTriggers = response._embedded ? response._embedded.eventTriggerDtoList : [];
+      this.eventTriggers = response._embedded ? response._embedded.eventTriggers : [];
+
+      for (const eventTrigger of this.eventTriggers) {
+        if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+          this.quantumApplicationService.getQuantumApplication(eventTrigger._links.executedApplication.href).subscribe( response => {
+            eventTrigger.executedApplication = response ? response : undefined;
+          });
+        }
+      }
     });
   }
 
@@ -44,7 +54,8 @@ export class EventTriggerListComponent implements OnInit {
         const dto: EventTriggerDto = {
           name: data.name,
           eventType: data.eventType,
-          additionalProperties: data.additionalProperties,
+          queueSize: data.queueSize,
+          executedApplication: data.executedApplication
         };
 
         this.eventTriggerService.createEventTrigger(dto).subscribe(() => {
@@ -62,9 +73,14 @@ export class EventTriggerListComponent implements OnInit {
 
   generateTypeDisplay(eventTrigger: any): string {
     if (eventTrigger.eventType === 'QUEUE_SIZE') {
-      return eventTrigger.eventType + ' <= ' + eventTrigger.additionalProperties.queueSize;
+      return eventTrigger.eventType + ' <= ' + eventTrigger.queueSize;
     }
-    return eventTrigger.name;
+
+    if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+      return eventTrigger.eventType + ' (' + eventTrigger.executedApplication.name + ')';
+    }
+
+    return eventTrigger.eventType;
   }
 
   fireEvent(): void {

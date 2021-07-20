@@ -11,6 +11,7 @@
       <mat-label>Type</mat-label>
       <mat-select id="eventType" formControlName="eventType" required>
         <mat-option [value]="'QUEUE_SIZE'">Queue Size</mat-option>
+        <mat-option [value]="'EXECUTION_RESULT'">Execution Result</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -18,6 +19,17 @@
       <mat-form-field class="w-100">
         <mat-label>Queue Size</mat-label>
         <input matInput id="queueSize" formControlName="queueSize" type="number" required>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container *ngIf="eventType && eventType.value === 'EXECUTION_RESULT'">
+      <mat-form-field class="w-100">
+        <mat-label>Quantum-Application</mat-label>
+        <mat-select id="executedApplication" formControlName="executedApplication" required>
+          <mat-option *ngFor="let application of availableQuantumApplications" [value]="application">
+            {{ application.name }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </ng-container>
   </form>

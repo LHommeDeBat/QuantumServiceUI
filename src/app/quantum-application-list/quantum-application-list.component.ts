@@ -40,13 +40,21 @@ export class QuantumApplicationListComponent implements OnInit {
 
   getQuantumApplications(): void {
     this.quantumApplicationService.getQuantumApplications().subscribe(response => {
-      this.quantumApplications = response._embedded ? response._embedded.quantumApplicationDtoList : [];
+      this.quantumApplications = response._embedded ? response._embedded.quantumApplications : [];
     });
   }
 
   getApplicationEventTriggers(url: string): void {
       this.quantumApplicationService.getApplicationEventTriggers(url).subscribe(response => {
-        this.applicationEventTriggers = response._embedded ? response._embedded.eventTriggerDtoList : [];
+        this.applicationEventTriggers = response._embedded ? response._embedded.eventTriggers : [];
+
+        for (const eventTrigger of this.applicationEventTriggers) {
+          if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+            this.quantumApplicationService.getQuantumApplication(eventTrigger._links.executedApplication.href).subscribe( response => {
+              eventTrigger.executedApplication = response ? response : undefined;
+            });
+          }
+        }
       });
   }
 
@@ -102,9 +110,14 @@ export class QuantumApplicationListComponent implements OnInit {
 
   generateEventTypeDisplay(eventTrigger: any): string {
     if (eventTrigger.eventType === 'QUEUE_SIZE') {
-      return eventTrigger.eventType + ' <= ' + eventTrigger.additionalProperties.queueSize;
+      return eventTrigger.eventType + ' <= ' + eventTrigger.queueSize;
     }
-    return eventTrigger.name;
+
+    if (eventTrigger.eventType === 'EXECUTION_RESULT') {
+      return eventTrigger.eventType + ' (' + eventTrigger.executedApplication.name + ')';
+    }
+
+    return eventTrigger.eventType;
   }
 
   openRegisterEventTriggersDialog(): void {

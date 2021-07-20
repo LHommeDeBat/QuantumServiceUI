@@ -66,7 +66,7 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   getJobs(url?: string): void {
     this.jobService.getJobs(this.page, this.pageSize, this.sort, this.statusFilter, url).subscribe(response => {
-      this.jobs = response._embedded ? response._embedded.jobDtoList : [];
+      this.jobs = response._embedded ? response._embedded.jobs : [];
       this.paginationLinks = response._links ? response._links : undefined;
       this.paginationDetails = response.page ? response.page : undefined;
 
@@ -75,13 +75,6 @@ export class JobListComponent implements OnInit, OnDestroy {
           job.quantumApplication = response ? response : undefined;
         });
       }
-    });
-  }
-
-  getJobApplication(url: string): void {
-    this.jobService.getJobApplication(url).subscribe(response => {
-      console.log(response);
-      this.selectedJob.application = response._embedded ? response._embedded.quantumApplicationDto : {};
     });
   }
 
