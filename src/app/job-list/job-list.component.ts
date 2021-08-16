@@ -129,4 +129,12 @@ export class JobListComponent implements OnInit, OnDestroy {
     }
     this.getJobs();
   }
+
+  prettyPrintLogs(errorLogs: string[]): string {
+    let output = '';
+    for (const line of errorLogs){
+      output += line + '\n';
+    }
+    return output;
+  }
 }
