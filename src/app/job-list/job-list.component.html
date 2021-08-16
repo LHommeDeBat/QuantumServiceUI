@@ -47,6 +47,14 @@
       </mat-form-field>
     </mat-card>
 
+    <mat-card class="m-3" *ngIf="selectedJob && sortedJobStatuses.length > 0">
+      <h3>Status-Details</h3>
+      <mat-form-field class="w-50" *ngFor="let statusDetail of sortedJobStatuses">
+        <mat-label>{{ statusDetail.status }}</mat-label>
+        <input matInput [ngModel]="statusDetail.statusReached | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
+    </mat-card>
+
     <mat-card class="m-3" *ngIf="selectedJob && selectedJob.quantumApplication.script">
       <mat-form-field class="w-100">
         <mat-label>Script</mat-label>

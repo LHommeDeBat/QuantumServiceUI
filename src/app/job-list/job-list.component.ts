@@ -32,6 +32,7 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   jobs: any[] = [];
   selectedJob: any = undefined;
+  sortedJobStatuses: any[] = [];
   @ViewChild('drawer') public drawer: MatDrawer | undefined;
 
   paginationLinks: any = undefined;
@@ -87,6 +88,14 @@ export class JobListComponent implements OnInit, OnDestroy {
   selectJob(job: any) {
     if (!this.selectedJob || this.selectedJob.id !== job.id) {
       this.selectedJob = job;
+
+      for (const key of Object.keys(this.selectedJob.statusDetails)) {
+        console.log(key);
+        this.selectedJob.statusDetails[key].status = key;
+      }
+      // @ts-ignore
+      this.sortedJobStatuses = Object.values(this.selectedJob.statusDetails).sort((a, b) => (a.statusReached > b.statusReached) ? 1 : ((b.statusReached > a.statusReached) ? -1 : 0));
+
       this.downloadApplicationScript(this.selectedJob.quantumApplication);
     }
     this.drawer?.open();
@@ -95,6 +104,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   closeDetailsView(): void {
     this.drawer?.close();
     this.selectedJob = undefined;
+    this.sortedJobStatuses = [];
   }
 
   parseResult(result: string): any {
