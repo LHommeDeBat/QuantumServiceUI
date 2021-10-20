@@ -11,7 +11,7 @@
         <mat-label>ID</mat-label>
         <input matInput [(ngModel)]="selectedJob.id" readonly>
       </mat-form-field>
-      <mat-form-field class="w-50">
+      <mat-form-field class="w-50" *ngIf="selectedJob.ibmqId">
         <mat-label>IBMQ-ID</mat-label>
         <input matInput [(ngModel)]="selectedJob.ibmqId" readonly>
       </mat-form-field>
@@ -44,6 +44,21 @@
       <mat-form-field class="w-50" *ngIf="selectedJob.endDate">
         <mat-label>Finished at</mat-label>
         <input matInput [ngModel]="selectedJob.endDate | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob && sortedJobStatuses.length > 0">
+      <h3>Status-Details</h3>
+      <mat-form-field class="w-100" *ngFor="let statusDetail of sortedJobStatuses">
+        <mat-label>{{ statusDetail.status }}</mat-label>
+        <input matInput [ngModel]="statusDetail.statusReached | date:'MMMM d, y, H:mm:ss'" readonly>
+      </mat-form-field>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="selectedJob && selectedJob.status === 'FAILED'">
+      <mat-form-field class="w-100">
+        <mat-label>Error-Logs</mat-label>
+        <textarea matInput [ngModel]="prettyPrintLogs(selectedJob.errorLogs)" [matTextareaAutosize]="true" readonly></textarea>
       </mat-form-field>
     </mat-card>
 

@@ -11,11 +11,6 @@
       <mat-spinner matPrefix *ngIf="loadingDevices" mode="indeterminate" diameter="17"></mat-spinner>
     </mat-form-field>
 
-    <mat-form-field class="w-100">
-      <mat-label>Reply to</mat-label>
-      <input matInput id="replyTo" formControlName="replyTo" required>
-    </mat-form-field>
-
     <div *ngIf="parametersAvailable()">
       <h4>Parameters</h4>
 
