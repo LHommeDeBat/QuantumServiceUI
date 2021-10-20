@@ -94,7 +94,6 @@ export class EventTriggerListComponent implements OnInit {
       if (data) {
         const dto: FireEventDto = {
           device: data.device,
-          replyTo: data.replyTo,
           eventType: data.eventType,
           additionalProperties: data.additionalProperties,
         };

@@ -19,10 +19,6 @@ export class InvokeQuantumApplicationComponent implements OnInit {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required
     ]),
-    replyTo: new FormControl(this.data.replyTo ? this.data.replyTo : 'JOB.RESULT.QUEUE', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      Validators.required
-    ]),
   });
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: InvokeApplicationForm,
@@ -45,17 +41,12 @@ export class InvokeQuantumApplicationComponent implements OnInit {
 
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.device = this.device ? this.device.value : undefined;
-      this.data.replyTo = this.replyTo ? this.replyTo.value : undefined;
       this.data.applicationParameters = this.parametersAvailable() ? this.buildParameters() : undefined;
     });
   }
 
   get device(): AbstractControl | null {
     return this.form ? this.form.get('device') : null;
-  }
-
-  get replyTo(): AbstractControl | null {
-    return this.form ? this.form.get('replyTo') : null;
   }
 
   isRequiredDataMissing(): boolean {
@@ -110,5 +101,4 @@ export interface InvokeApplicationForm {
   applicationName: string;
   applicationParameters: any;
   device: string;
-  replyTo: string;
 }

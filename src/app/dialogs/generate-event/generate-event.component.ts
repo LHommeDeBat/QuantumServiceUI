@@ -26,9 +26,6 @@ export class GenerateEventComponent implements OnInit {
     eventType: new FormControl(this.data.eventType ? this.data.eventType : 'QUEUE_SIZE', [
       Validators.required
     ]),
-    replyTo: new FormControl(this.data.replyTo ? this.data.replyTo : 'JOB.RESULT.QUEUE', [
-      Validators.required
-    ]),
     queueSize: new FormControl(this.data.additionalProperties && this.data.additionalProperties.queueSize ? this.data.additionalProperties.queueSize : undefined, [
       Validators.required
     ]),
@@ -64,7 +61,6 @@ export class GenerateEventComponent implements OnInit {
     this.dialogRef.beforeClosed().subscribe(() => {
       this.data.device = this.device ? this.device.value : undefined;
       this.data.eventType = this.eventType ? this.eventType.value : undefined;
-      this.data.replyTo = this.replyTo ? this.replyTo.value : undefined;
       if (this.data.eventType === 'QUEUE_SIZE') {
         this.data.additionalProperties.queueSize = this.queueSize ? this.queueSize.value : undefined;
       }
@@ -83,10 +79,6 @@ export class GenerateEventComponent implements OnInit {
 
   get eventType(): AbstractControl | null {
     return this.form ? this.form.get('eventType') : null;
-  }
-
-  get replyTo(): AbstractControl | null {
-    return this.form ? this.form.get('replyTo') : null;
   }
 
   get queueSize(): AbstractControl | null {
@@ -113,7 +105,6 @@ export class GenerateEventComponent implements OnInit {
       this.availableDevices.length === 0 ||
       this.device?.errors?.required ||
       this.eventType?.errors?.required ||
-      this.replyTo?.errors?.required ||
       (this.eventType?.value === 'QUEUE_SIZE' && this.queueSize?.errors?.required) ||
       this.checkParameters()
     );

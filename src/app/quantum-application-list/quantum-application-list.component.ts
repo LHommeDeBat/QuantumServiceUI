@@ -146,7 +146,6 @@ export class QuantumApplicationListComponent implements OnInit {
       if (data) {
         const dto: any = {
           device: data.device,
-          replyTo: data.replyTo,
           additionalProperties: data.applicationParameters
         };
 
