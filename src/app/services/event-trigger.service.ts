@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EventTriggerDto } from '../models/event-trigger-dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventTriggerService {
 
-  url = 'http://localhost:9005/event-triggers';
+  url = environment.quantumServiceMessagingHost + ':' + environment.quantumServiceMessagingPort + '/event-triggers';
 
   constructor(private http: HttpClient) {}
 
